@@ -1,0 +1,13 @@
+.. AUTO-GENERATED FILE -- DO NOT EDIT!
+
+:mod:`imageclasses`
+===================
+.. automodule:: nibabel.imageclasses
+
+.. currentmodule:: nibabel.imageclasses
+.. autosummary::
+
+
+
+.. currentmodule:: nibabel.imageclasses
+

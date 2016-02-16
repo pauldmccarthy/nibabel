@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Neuroimaging in Python &mdash; NiBabel 2.0.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nibabel.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2.0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="NiBabel 2.0.2 documentation" href="index.html" />
+  <meta name="keywords" content="nipy, neuroimaging, python, neuroscience">
+
+  </head>
+  <body role="document">
+<div style="background-color: white; text-align: left; padding-left: 150px; padding-bottom:50px; padding-top:20px; background-image: url(_static/nipy-logo-bg-138x120.png); background-repeat: no-repeat;">
+<h1>NiBabel</h1>
+<h3 style="margin-top:-5px;color:#2f83c8">Access a cacophony of neuro-imaging file formats</h3>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+  <li><a href="http://nipy.org/">Community</a> |&nbsp;</li>
+  <li><a href="index.html">NiBabel Home</a> |&nbsp;</li>
+  <li><a href="https://mail.python.org/mailman/listinfo/neuroimaging">Mailing list</a> |&nbsp;</li>
+  <li><a href="legal.html">License</a> |&nbsp;</li>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Installing data packages</a><ul>
+<li><a class="reference internal" href="#data-package-installation-as-an-administrator">Data package installation as an administrator</a></li>
+<li><a class="reference internal" href="#non-administrator-data-package-installation">Non-administrator data package installation</a><ul>
+<li><a class="reference internal" href="#on-unix">On unix</a></li>
+<li><a class="reference internal" href="#on-windows">On windows</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/installing_data.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<p><img src="_static/reggie.png" alt="Reggie -- the one" /></p>
+
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="installing-data-packages">
+<span id="installing-data"></span><h1>Installing data packages<a class="headerlink" href="#installing-data-packages" title="Permalink to this headline">¶</a></h1>
+<p>nibabel includes some machinery for using optional data packages.  We use data
+packages for some of the DICOM tests in nibabel.  There are also data packages
+for standard template images, and other packages for components of nipy,
+including the main nipy package.</p>
+<p>For more details on data package design, see <a class="reference internal" href="devel/data_pkg_design.html#data-package-design"><span>Design of data packages for the nibabel and the nipy suite</span></a>.</p>
+<p>We haven&#8217;t yet made a nice automated way of downloading and installing the
+packages.  For the moment you can find packages for the data and template files
+at <a class="reference external" href="http://nipy.org/data-packages">http://nipy.org/data-packages</a>.</p>
+<div class="section" id="data-package-installation-as-an-administrator">
+<h2>Data package installation as an administrator<a class="headerlink" href="#data-package-installation-as-an-administrator" title="Permalink to this headline">¶</a></h2>
+<p>The installation procedure, for now, is very basic.  For example, let us
+say that you want the &#8216;nipy-templates&#8217; package at
+<a class="reference external" href="http://nipy.org/data-packages/nipy-templates-0.1.tar.gz">http://nipy.org/data-packages/nipy-templates-0.1.tar.gz</a>
+. You simply download this archive, unpack it, and then run the standard
+<code class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">install</span></code> on it.  On a unix system this might look
+like:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>curl -O http://nipy.org/data-packages/nipy-templates-0.1.tar.gz
+tar zxvf nipy-templates-0.1.tar.gz
+cd nipy-templates-0.1
+sudo python setup.py install
+</pre></div>
+</div>
+<p>On windows, download the file, extract the archive to a folder using the
+GUI, and then, using the windows shell or similar:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>cd c:\path\to\extracted\files
+python setup.py install
+</pre></div>
+</div>
+</div>
+<div class="section" id="non-administrator-data-package-installation">
+<h2>Non-administrator data package installation<a class="headerlink" href="#non-administrator-data-package-installation" title="Permalink to this headline">¶</a></h2>
+<p>The commands above assume you are installing into the default system
+directories.  If you want to install into a custom directory, then (in
+python, or ipython, or a text editor) look at the help for
+<code class="docutils literal"><span class="pre">nipy.utils.data.get_data_path()</span></code> . There are instructions there for
+pointing your nipy installation to the installed data.</p>
+<div class="section" id="on-unix">
+<h3>On unix<a class="headerlink" href="#on-unix" title="Permalink to this headline">¶</a></h3>
+<p>For example, say you installed with:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>cd nipy-templates-0.1
+python setup.py install --prefix=/home/my-user/some-dir
+</pre></div>
+</div>
+<p>Then you may want to do make a file <code class="docutils literal"><span class="pre">~/.nipy/config.ini</span></code> with the
+following contents:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>[DATA]
+/home/my-user/some-dir/share/nipy
+</pre></div>
+</div>
+</div>
+<div class="section" id="on-windows">
+<h3>On windows<a class="headerlink" href="#on-windows" title="Permalink to this headline">¶</a></h3>
+<p>Say you installed with (windows shell):</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>cd nipy-templates-0.1
+python setup.py install --prefix=c:\some\path
+</pre></div>
+</div>
+<p>Then first, find out your home directory:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>python -c &quot;import os; print os.path.expanduser(&#39;~&#39;)&quot;
+</pre></div>
+</div>
+<p>Let&#8217;s say that was <code class="docutils literal"><span class="pre">c:\Documents</span> <span class="pre">and</span> <span class="pre">Settings\My</span> <span class="pre">User</span></code>.  Then, make a
+new file called <code class="docutils literal"><span class="pre">c:\Documents</span> <span class="pre">and</span> <span class="pre">Settings\My</span> <span class="pre">User\_nipy\config.ini</span></code>
+with contents:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>[DATA]
+c:\some\path\share\nipy
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2006-2015, Matthew Brett, Michael Hanke and Eric Larson &lt;nipy-devel@neuroimaging.scipy.org&gt;.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+  </body>
+</html>

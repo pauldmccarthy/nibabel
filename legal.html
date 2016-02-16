@@ -1,0 +1,318 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Neuroimaging in Python &mdash; NiBabel 2.0.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nibabel.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2.0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="NiBabel 2.0.2 documentation" href="index.html" />
+    <link rel="up" title="NiBabel Manual" href="manual.html" />
+    <link rel="next" title="NiBabel Development Changelog" href="changelog.html" />
+    <link rel="prev" title="Image voxel orientation" href="image_orientation.html" />
+  <meta name="keywords" content="nipy, neuroimaging, python, neuroscience">
+
+  </head>
+  <body role="document">
+<div style="background-color: white; text-align: left; padding-left: 150px; padding-bottom:50px; padding-top:20px; background-image: url(_static/nipy-logo-bg-138x120.png); background-repeat: no-repeat;">
+<h1>NiBabel</h1>
+<h3 style="margin-top:-5px;color:#2f83c8">Access a cacophony of neuro-imaging file formats</h3>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="changelog.html" title="NiBabel Development Changelog"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="image_orientation.html" title="Image voxel orientation"
+             accesskey="P">previous</a> |</li>
+  <li><a href="http://nipy.org/">Community</a> |&nbsp;</li>
+  <li><a href="index.html">NiBabel Home</a> |&nbsp;</li>
+  <li><a href="https://mail.python.org/mailman/listinfo/neuroimaging">Mailing list</a> |&nbsp;</li>
+  <li><a href="legal.html">License</a> |&nbsp;</li>
+
+          <li class="nav-item nav-item-1"><a href="manual.html" accesskey="U">NiBabel Manual</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Copyright and Licenses</a><ul>
+<li><a class="reference internal" href="#nibabel">NiBabel</a></li>
+<li><a class="reference internal" href="#rd-party-code-and-data">3rd party code and data</a><ul>
+<li><a class="reference internal" href="#netcdf">NetCDF</a></li>
+<li><a class="reference internal" href="#sphinx-autosummary-extension">Sphinx autosummary extension</a></li>
+<li><a class="reference internal" href="#ordereddict">Ordereddict</a></li>
+<li><a class="reference internal" href="#mni-icbm152-t1-tal-nlin-asym-09a">mni_icbm152_t1_tal_nlin_asym_09a</a></li>
+<li><a class="reference internal" href="#philips-par-rec-data">Philips PAR/REC data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="image_orientation.html"
+                        title="previous chapter">Image voxel orientation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="changelog.html"
+                        title="next chapter">NiBabel Development Changelog</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/legal.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<p><img src="_static/reggie.png" alt="Reggie -- the one" /></p>
+
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="copyright-and-licenses">
+<span id="license"></span><h1>Copyright and Licenses<a class="headerlink" href="#copyright-and-licenses" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="nibabel">
+<h2>NiBabel<a class="headerlink" href="#nibabel" title="Permalink to this headline">¶</a></h2>
+<p>The nibabel package, including all examples, code snippets and attached
+documentation is covered by the MIT license.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>The MIT License
+
+Copyright (c) 2009-2014 Matthew Brett &lt;matthew.brett@gmail.com&gt;
+Copyright (c) 2010-2013 Stephan Gerhard &lt;git@unidesign.ch&gt;
+Copyright (c) 2006-2014 Michael Hanke &lt;michael.hanke@gmail.com&gt;
+Copyright (c) 2011 Christian Haselgrove &lt;christian.haselgrove@umassmed.edu&gt;
+Copyright (c) 2010-2011 Jarrod Millman &lt;jarrod.millman@gmail.com&gt;
+Copyright (c) 2011-2014 Yaroslav Halchenko &lt;debian@onerussian.com&gt;
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+</pre></div>
+</div>
+</div>
+<div class="section" id="rd-party-code-and-data">
+<h2>3rd party code and data<a class="headerlink" href="#rd-party-code-and-data" title="Permalink to this headline">¶</a></h2>
+<p>Some code distributed within the nibabel sources was developed by other
+projects. This code is distributed under its respective licenses that are
+listed below.</p>
+<div class="section" id="netcdf">
+<h3>NetCDF<a class="headerlink" href="#netcdf" title="Permalink to this headline">¶</a></h3>
+<p>The netcdf IO module has been taken from SciPy.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Copyright (c) 1999-2010 SciPy Developers &lt;scipy-dev@scipy.org&gt;
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+  a. Redistributions of source code must retain the above copyright notice,
+     this list of conditions and the following disclaimer.
+  b. Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in the
+     documentation and/or other materials provided with the distribution.
+  c. Neither the name of the Enthought nor the names of its contributors
+     may be used to endorse or promote products derived from this software
+     without specific prior written permission.
+
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
+DAMAGE.
+</pre></div>
+</div>
+</div>
+<div class="section" id="sphinx-autosummary-extension">
+<h3>Sphinx autosummary extension<a class="headerlink" href="#sphinx-autosummary-extension" title="Permalink to this headline">¶</a></h3>
+<p>This extension has been copied from NumPy (Jul 16, 2010) as the one shipped with
+Sphinx 0.6 doesn&#8217;t work properly.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Copyright (c) 2007-2009 Stefan van der Walt and Sphinx team
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+  a. Redistributions of source code must retain the above copyright notice,
+     this list of conditions and the following disclaimer.
+  b. Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in the
+     documentation and/or other materials provided with the distribution.
+  c. Neither the name of the Enthought nor the names of its contributors
+     may be used to endorse or promote products derived from this software
+     without specific prior written permission.
+
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
+DAMAGE.
+</pre></div>
+</div>
+</div>
+<div class="section" id="ordereddict">
+<h3>Ordereddict<a class="headerlink" href="#ordereddict" title="Permalink to this headline">¶</a></h3>
+<p>In <code class="docutils literal"><span class="pre">nibabel/externals/ordereddict.py</span></code></p>
+<p>Copied from: <a class="reference external" href="https://pypi.python.org/packages/source/o/ordereddict/ordereddict-1.1.tar.gz#md5=a0ed854ee442051b249bfad0f638bbec">https://pypi.python.org/packages/source/o/ordereddict/ordereddict-1.1.tar.gz#md5=a0ed854ee442051b249bfad0f638bbec</a></p>
+<p>Copyright (c) 2009 Raymond Hettinger</p>
+<p>Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation files
+(the &#8220;Software&#8221;), to deal in the Software without restriction,
+including without limitation the rights to use, copy, modify, merge,
+publish, distribute, sublicense, and/or sell copies of the Software,
+and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:</p>
+<blockquote>
+<div><p>The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.</p>
+<p>THE SOFTWARE IS PROVIDED &#8220;AS IS&#8221;, WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.</p>
+</div></blockquote>
+</div>
+<div class="section" id="mni-icbm152-t1-tal-nlin-asym-09a">
+<h3>mni_icbm152_t1_tal_nlin_asym_09a<a class="headerlink" href="#mni-icbm152-t1-tal-nlin-asym-09a" title="Permalink to this headline">¶</a></h3>
+<p>The file <code class="docutils literal"><span class="pre">doc/source/someone.nii.gz</span></code> is a subsampled version of the file
+<code class="docutils literal"><span class="pre">mni_icbm152_t1_tal_nlin_asym_09a.nii</span></code> from the MNI non-linear templates
+archive <code class="docutils literal"><span class="pre">mni_icbm152_t1_tal_nlin_asym_09a</span></code>.  The original image has the
+following license (where &#8216;softwware&#8217; refers to the image):</p>
+<blockquote>
+<div><p>Copyright (C) 1993-2004 Louis Collins, McConnell Brain Imaging Centre,
+Montreal Neurological Institute, McGill University.</p>
+<p>Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted, provided
+that the above copyright notice appear in all copies.  The authors and
+McGill University make no representations about the suitability of this
+software for any purpose.  It is provided &#8220;as is&#8221; without express or
+implied warranty.  The authors are not responsible for any data loss,
+equipment damage, property loss, or injury to subjects or patients
+resulting from the use or misuse of this software package.</p>
+</div></blockquote>
+</div>
+<div class="section" id="philips-par-rec-data">
+<h3>Philips PAR/REC data<a class="headerlink" href="#philips-par-rec-data" title="Permalink to this headline">¶</a></h3>
+<p>The files:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>nibabel/tests/data/phantom_EPI_asc_CLEAR_2_1.PAR
+nibabel/tests/data/phantom_EPI_asc_CLEAR_2_1.REC
+nibabel/tests/data/Phantom_EPI_3mm_cor_20APtrans_15RLrot_SENSE_15_1.PAR
+nibabel/tests/data/Phantom_EPI_3mm_cor_SENSE_8_1.PAR
+nibabel/tests/data/Phantom_EPI_3mm_sag_15AP_SENSE_13_1.PAR
+nibabel/tests/data/Phantom_EPI_3mm_sag_15FH_SENSE_12_1.PAR
+nibabel/tests/data/Phantom_EPI_3mm_sag_15RL_SENSE_11_1.PAR
+nibabel/tests/data/Phantom_EPI_3mm_sag_SENSE_7_1.PAR
+nibabel/tests/data/Phantom_EPI_3mm_tra_-30AP_10RL_20FH_SENSE_14_1.PAR
+nibabel/tests/data/Phantom_EPI_3mm_tra_15FH_SENSE_9_1.PAR
+nibabel/tests/data/Phantom_EPI_3mm_tra_15RL_SENSE_10_1.PAR
+nibabel/tests/data/Phantom_EPI_3mm_tra_SENSE_6_1.PAR
+</pre></div>
+</div>
+<p>are from <a class="reference external" href="http://psydata.ovgu.de/philips_achieva_testfiles">http://psydata.ovgu.de/philips_achieva_testfiles</a>, and released under
+the PDDL version 1.0 available at <a class="reference external" href="http://opendatacommons.org/licenses/pddl/1.0/">http://opendatacommons.org/licenses/pddl/1.0/</a></p>
+<p>The files:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">nibabel</span><span class="o">/</span><span class="n">nibabel</span><span class="o">/</span><span class="n">tests</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">DTI</span><span class="o">.</span><span class="n">PAR</span>
+<span class="n">nibabel</span><span class="o">/</span><span class="n">nibabel</span><span class="o">/</span><span class="n">tests</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">NA</span><span class="o">.</span><span class="n">PAR</span>
+<span class="n">nibabel</span><span class="o">/</span><span class="n">nibabel</span><span class="o">/</span><span class="n">tests</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">T1</span><span class="o">.</span><span class="n">PAR</span>
+<span class="n">nibabel</span><span class="o">/</span><span class="n">nibabel</span><span class="o">/</span><span class="n">tests</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">T2</span><span class="o">-</span><span class="n">interleaved</span><span class="o">.</span><span class="n">PAR</span>
+<span class="n">nibabel</span><span class="o">/</span><span class="n">nibabel</span><span class="o">/</span><span class="n">tests</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">T2</span><span class="o">.</span><span class="n">PAR</span>
+<span class="n">nibabel</span><span class="o">/</span><span class="n">nibabel</span><span class="o">/</span><span class="n">tests</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">T2_</span><span class="o">-</span><span class="n">interleaved</span><span class="o">.</span><span class="n">PAR</span>
+<span class="n">nibabel</span><span class="o">/</span><span class="n">nibabel</span><span class="o">/</span><span class="n">tests</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">T2_</span><span class="o">.</span><span class="n">PAR</span>
+<span class="n">nibabel</span><span class="o">/</span><span class="n">nibabel</span><span class="o">/</span><span class="n">tests</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">fieldmap</span><span class="o">.</span><span class="n">PAR</span>
+</pre></div>
+</div>
+<p>are from <a class="reference external" href="https://github.com/yarikoptic/nitest-balls1">https://github.com/yarikoptic/nitest-balls1</a>, also released under the
+the PDDL version 1.0 available at <a class="reference external" href="http://opendatacommons.org/licenses/pddl/1.0/">http://opendatacommons.org/licenses/pddl/1.0/</a></p>
+<blockquote>
+<div>nibabel/nibabel/tests/data/umass_anonymized.PAR</div></blockquote>
+<p>is courtesy of the University of Massachusetts Medical School, also released
+under the PDDL.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2006-2015, Matthew Brett, Michael Hanke and Eric Larson &lt;nipy-devel@neuroimaging.scipy.org&gt;.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+  </body>
+</html>

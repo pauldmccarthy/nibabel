@@ -1,0 +1,268 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Neuroimaging in Python &mdash; NiBabel 2.0.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nibabel.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2.0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="NiBabel 2.0.2 documentation" href="#" />
+    <link rel="next" title="NiBabel Manual" href="manual.html" />
+  <meta name="keywords" content="nipy, neuroimaging, python, neuroscience">
+
+  </head>
+  <body role="document">
+<div style="background-color: white; text-align: left; padding-left: 150px; padding-bottom:50px; padding-top:20px; background-image: url(_static/nipy-logo-bg-138x120.png); background-repeat: no-repeat;">
+<h1>NiBabel</h1>
+<h3 style="margin-top:-5px;color:#2f83c8">Access a cacophony of neuro-imaging file formats</h3>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="manual.html" title="NiBabel Manual"
+             accesskey="N">next</a> |</li>
+  <li><a href="http://nipy.org/">Community</a> |&nbsp;</li>
+  <li><a href="#">NiBabel Home</a> |&nbsp;</li>
+  <li><a href="https://mail.python.org/mailman/listinfo/neuroimaging">Mailing list</a> |&nbsp;</li>
+  <li><a href="legal.html">License</a> |&nbsp;</li>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">NiBabel</a><ul>
+<li><a class="reference internal" href="#website">Website</a></li>
+<li><a class="reference internal" href="#mailing-lists">Mailing Lists</a></li>
+<li><a class="reference internal" href="#code">Code</a></li>
+<li><a class="reference internal" href="#license">License</a></li>
+<li><a class="reference internal" href="#id1">Documentation</a></li>
+<li><a class="reference internal" href="#authors-and-contributors">Authors and Contributors</a></li>
+<li><a class="reference internal" href="#license-reprise">License reprise</a></li>
+<li><a class="reference internal" href="#download-and-installation">Download and Installation</a></li>
+<li><a class="reference internal" href="#support">Support</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="manual.html"
+                        title="next chapter">NiBabel Manual</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div><h3>Quick links</h3>
+
+<ul>
+    <li><a href="https://pypi.python.org/pypi/nibabel">Nibabel pypi</a></li>
+    <li><a href="https://github.com/nipy/nibabel">Git repository</a></li>
+    <li><a href="https://mail.python.org/pipermail/neuroimaging">Mailing list archive</a></li>
+</ul>
+
+<script type="text/javascript" src="https://www.ohloh.net/projects/480908/widgets/project_partner_badge"></script>
+
+<h3>Search mailing list archive</h3>
+<script type="text/javascript">
+  function mlsearch(curobj)
+  {
+    curobj.q.value="site:mail.python.org/pipermail/neuroimaging/ "+curobj.userquery.value
+}
+</script>
+<form action="https://www.google.com/search" method="get" onSubmit="mlsearch(this)">
+<input name="userquery" size="18" type="text" /> <input type="submit" value="Go" />
+<input name="q" type="hidden" />
+</form>
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<p><img src="_static/reggie.png" alt="Reggie -- the one" /></p>
+
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="nibabel">
+<h1>NiBabel<a class="headerlink" href="#nibabel" title="Permalink to this headline">¶</a></h1>
+<p>Read / write access to some common neuroimaging file formats</p>
+<p>This package provides read +/- write access to some common medical and
+neuroimaging file formats, including: <a class="reference external" href="http://www.grahamwideman.com/gw/brain/analyze/formatdoc.htm">ANALYZE</a> (plain, SPM99, SPM2 and later),
+<a class="reference external" href="https://www.nitrc.org/projects/gifti">GIFTI</a>, <a class="reference external" href="http://nifti.nimh.nih.gov/nifti-1/">NIfTI1</a>, <a class="reference external" href="http://nifti.nimh.nih.gov/nifti-2/">NIfTI2</a>, <a class="reference external" href="https://en.wikibooks.org/wiki/MINC/Reference/MINC1_File_Format_Reference">MINC1</a>, <a class="reference external" href="https://en.wikibooks.org/wiki/MINC/Reference/MINC2.0_File_Format_Reference">MINC2</a>, <a class="reference external" href="https://surfer.nmr.mgh.harvard.edu/fswiki/FsTutorial/MghFormat">MGH</a> and <a class="reference external" href="http://xmedcon.sourceforge.net/Docs/Ecat">ECAT</a> as well as Philips
+PAR/REC.  We can read and write <a class="reference external" href="https://surfer.nmr.mgh.harvard.edu">Freesurfer</a> geometry, and read Freesurfer
+morphometry and annotation files.  There is some very limited support for
+<a class="reference external" href="http://medical.nema.org/">DICOM</a>.  NiBabel is the successor of <a class="reference external" href="http://niftilib.sourceforge.net/pynifti/">PyNIfTI</a>.</p>
+<p>The various image format classes give full or selective access to header (meta)
+information and access to the image data is made available via NumPy arrays.</p>
+<div class="section" id="website">
+<h2>Website<a class="headerlink" href="#website" title="Permalink to this headline">¶</a></h2>
+<p>Current documentation on nibabel can always be found at the <a class="reference external" href="https://nipy.github.io/nibabel">NIPY nibabel
+website</a>.</p>
+</div>
+<div class="section" id="mailing-lists">
+<h2>Mailing Lists<a class="headerlink" href="#mailing-lists" title="Permalink to this headline">¶</a></h2>
+<p>Please see the <a class="reference external" href="http://mail.scipy.org/mailman/listinfo/nipy-devel">nipy devel list</a>. The nipy devel list is
+fine for user and developer questions about nibabel.</p>
+</div>
+<div class="section" id="code">
+<h2>Code<a class="headerlink" href="#code" title="Permalink to this headline">¶</a></h2>
+<p>You can find our sources and single-click downloads:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/nipy/nibabel">Main repository</a> on Github;</li>
+<li><a class="reference external" href="https://nipy.github.io/nibabel">Documentation</a> for all releases and current development tree;</li>
+<li>Download the <a class="reference external" href="https://pypi.python.org/pypi/nibabel">current release</a> from pypi;</li>
+<li>Download <a class="reference external" href="https://github.com/nipy/nibabel/archive/master.zip">current development version</a> as a zip file;</li>
+<li>Downloads of all <a class="reference external" href="https://github.com/nipy/nibabel/releases">available releases</a>.</li>
+</ul>
+</div>
+<div class="section" id="license">
+<h2>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
+<p>Nibabel is licensed under the terms of the MIT license. Some code included with
+nibabel is licensed under the BSD license.  Please see the COPYING file in the
+nibabel distribution.</p>
+</div>
+<div class="section" id="id1">
+<h2>Documentation<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference internal" href="manual.html#manual"><span>User Documentation</span></a> (manual)</li>
+<li><a class="reference internal" href="tutorials.html#tutorials"><span>Tutorials</span></a> (relevant tutorials on imaging)</li>
+<li><a class="reference internal" href="api.html#api"><span>API Documentation</span></a> (comprehensive reference)</li>
+<li><a class="reference internal" href="devel/devguide.html#chap-devguide"><span>Developer Guidelines</span></a> (for those who want to contribute)</li>
+<li><a class="reference internal" href="changelog.html#changelog"><span>Development Changelog</span></a> (see what has changed)</li>
+<li><a class="reference internal" href="dicom/dicom.html#dicom"><span>DICOM concepts</span></a> (details about implementing DICOM reading)</li>
+<li><a class="reference internal" href="genindex.html"><span>Index</span></a> (access by keywords)</li>
+<li><a class="reference internal" href="search.html"><span>Search Page</span></a> (online and offline full-text search)</li>
+</ul>
+<p>See also the <a class="reference internal" href="devel/index.html#devindex"><span>Developer documentation page</span></a> for development
+discussions, release procedure and more.</p>
+</div>
+<div class="section" id="authors-and-contributors">
+<h2>Authors and Contributors<a class="headerlink" href="#authors-and-contributors" title="Permalink to this headline">¶</a></h2>
+<p>The main authors of NiBabel are <a class="reference external" href="http://matthew.dynevor.org">Matthew Brett</a>, <a class="reference external" href="http://mih.voxindeserto.de">Michael Hanke</a> and <a class="reference external" href="http://www.unidesign.ch">Stephan
+Gerhard</a>.  The authors are grateful to the following people who have
+contributed code and discussion (in rough order of appearance):</p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.onerussian.com">Yaroslav O. Halchenko</a></li>
+<li>Chris Burns</li>
+<li><a class="reference external" href="http://gael-varoquaux.info/">Gaël Varoquaux</a></li>
+<li>Ian Nimmo-Smith</li>
+<li>Jarrod Millman</li>
+<li>Bertrand Thirion</li>
+<li>Thomas Ballinger</li>
+<li>Cindee Madison</li>
+<li>Valentin Haenel</li>
+<li>Alexandre Gramfort</li>
+<li>Christian Haselgrove</li>
+<li>Krish Subramaniam</li>
+<li>Yannick Schwartz</li>
+<li>Bago Amirbekian</li>
+<li>Brendan Moloney</li>
+<li>Félix C. Morency</li>
+<li>Chris Markiewicz</li>
+<li>JB Poline</li>
+<li>Nolan Nichols</li>
+<li>Nguyen, Ly</li>
+<li>Basile Pinsard</li>
+<li>Kevin S. Hahn</li>
+<li>Eric Larson</li>
+<li>Nikolaas N. Oosterhof</li>
+<li>ohinds</li>
+<li>Michiel Cottaar</li>
+<li>Satrajit Ghosh</li>
+<li>Demian Wassermann</li>
+<li>Philippe Gervais</li>
+<li>Justin Lecher</li>
+<li><a class="reference external" href="http://bcipolli.github.io/">Ben Cipollini</a></li>
+<li>Clemens C. C. Bauer</li>
+</ul>
+</div>
+<div class="section" id="license-reprise">
+<h2>License reprise<a class="headerlink" href="#license-reprise" title="Permalink to this headline">¶</a></h2>
+<p>NiBabel is free-software (beer and speech) and covered by the <a class="reference external" href="http://www.opensource.org/licenses/mit-license.php">MIT License</a>.
+This applies to all source code, documentation, examples and snippets inside
+the source distribution (including this website). Please see the
+<a class="reference internal" href="legal.html#license"><span>appendix of the manual</span></a> for the copyright statement and the
+full text of the license.</p>
+</div>
+<div class="section" id="download-and-installation">
+<h2>Download and Installation<a class="headerlink" href="#download-and-installation" title="Permalink to this headline">¶</a></h2>
+<p>Please find detailed <a class="reference internal" href="installation.html#installation"><span>download and installation instructions</span></a> in the manual.</p>
+</div>
+<div class="section" id="support">
+<h2>Support<a class="headerlink" href="#support" title="Permalink to this headline">¶</a></h2>
+<p>If you have problems installing the software or questions about usage,
+documentation or anything else related to NiBabel, you can post to the NiPy
+mailing list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Mailing list:</th><td class="field-body"><a class="reference external" href="mailto:neuroimaging&#37;&#52;&#48;python&#46;org">neuroimaging<span>&#64;</span>python<span>&#46;</span>org</a> [<a class="reference external" href="https://mail.python.org/mailman/listinfo/neuroimaging">subscription</a>, <a class="reference external" href="https://mail.python.org/pipermail/neuroimaging">archive</a>]</td>
+</tr>
+</tbody>
+</table>
+<p>We recommend that anyone using NiBabel subscribes to the mailing list.  The
+mailing list is the preferred way to announce changes and additions to the
+project. You can also search the mailing list archive using the <em>mailing list
+archive search</em> located in the sidebar of the NiBabel home page.</p>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2006-2015, Matthew Brett, Michael Hanke and Eric Larson &lt;nipy-devel@neuroimaging.scipy.org&gt;.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Neuroimaging in Python &mdash; NiBabel 2.0.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nibabel.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2.0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="NiBabel 2.0.2 documentation" href="index.html" />
+    <link rel="up" title="NiBabel Manual" href="manual.html" />
+    <link rel="next" title="Getting Started" href="gettingstarted.html" />
+    <link rel="prev" title="NiBabel Manual" href="manual.html" />
+  <meta name="keywords" content="nipy, neuroimaging, python, neuroscience">
+
+  </head>
+  <body role="document">
+<div style="background-color: white; text-align: left; padding-left: 150px; padding-bottom:50px; padding-top:20px; background-image: url(_static/nipy-logo-bg-138x120.png); background-repeat: no-repeat;">
+<h1>NiBabel</h1>
+<h3 style="margin-top:-5px;color:#2f83c8">Access a cacophony of neuro-imaging file formats</h3>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="gettingstarted.html" title="Getting Started"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="manual.html" title="NiBabel Manual"
+             accesskey="P">previous</a> |</li>
+  <li><a href="http://nipy.org/">Community</a> |&nbsp;</li>
+  <li><a href="index.html">NiBabel Home</a> |&nbsp;</li>
+  <li><a href="https://mail.python.org/mailman/listinfo/neuroimaging">Mailing list</a> |&nbsp;</li>
+  <li><a href="legal.html">License</a> |&nbsp;</li>
+
+          <li class="nav-item nav-item-1"><a href="manual.html" accesskey="U">NiBabel Manual</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Installation</a><ul>
+<li><a class="reference internal" href="#installer-and-packages">Installer and packages</a><ul>
+<li><a class="reference internal" href="#pip-and-the-python-package-index">pip and the Python package index</a></li>
+<li><a class="reference internal" href="#debian-ubuntu">Debian/Ubuntu</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#install-from-source">Install from source</a><ul>
+<li><a class="reference internal" href="#requirements">Requirements</a></li>
+<li><a class="reference internal" href="#get-the-sources">Get the sources</a></li>
+<li><a class="reference internal" href="#id2">Installation</a></li>
+<li><a class="reference internal" href="#validating-your-install">Validating your install</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="manual.html"
+                        title="previous chapter">NiBabel Manual</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="gettingstarted.html"
+                        title="next chapter">Getting Started</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/installation.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<p><img src="_static/reggie.png" alt="Reggie -- the one" /></p>
+
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="installation">
+<span id="id1"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>NiBabel is a pure Python package at the moment, and it should be easy to get
+NiBabel running on any system. For the most popular platforms and operating
+systems there should be packages in the respective native packaging format
+(DEB, RPM or installers). On other systems you can install NiBabel using
+<a class="reference external" href="https://pip.readthedocs.org/en/latest">pip</a> or by downloading the source package and running the usual <code class="docutils literal"><span class="pre">python</span>
+<span class="pre">setup.py</span> <span class="pre">install</span></code>.</p>
+<div class="section" id="installer-and-packages">
+<h2>Installer and packages<a class="headerlink" href="#installer-and-packages" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="pip-and-the-python-package-index">
+<span id="install-pypi"></span><h3>pip and the Python package index<a class="headerlink" href="#pip-and-the-python-package-index" title="Permalink to this headline">¶</a></h3>
+<p>If you are not using a Linux package manager, then best way to install NiBabel
+is via <a class="reference external" href="https://pip.readthedocs.org/en/latest">pip</a>.  If you don&#8217;t have pip already, follow the <a class="reference external" href="https://pip.readthedocs.org/en/latest/installing.html">pip install
+instructions</a>.</p>
+<p>Then open a terminal (<code class="docutils literal"><span class="pre">Terminal.app</span></code> on OSX, <code class="docutils literal"><span class="pre">cmd</span></code> or <code class="docutils literal"><span class="pre">Powershell</span></code> on
+Windows), and type:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>pip install nibabel
+</pre></div>
+</div>
+<p>This will download and install NiBabel.</p>
+<p>If you really like doing stuff manually, you can install NiBabel by downoading
+the source from <a class="reference external" href="https://pypi.python.org/pypi/nibabel">NiBabel pypi</a> .  Go to the pypi page and select the source
+distribution you want.  Download the distribution, unpack it, and then, from
+the unpacked directory, run:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>python setup.py install
+</pre></div>
+</div>
+<p>or (if you need root permission to install on a unix system):</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>sudo python setup.py install
+</pre></div>
+</div>
+</div>
+<div class="section" id="debian-ubuntu">
+<span id="install-debian"></span><h3>Debian/Ubuntu<a class="headerlink" href="#debian-ubuntu" title="Permalink to this headline">¶</a></h3>
+<p>Our friendas at <a class="reference external" href="http://neuro.debian.net">NeuroDebian</a> have packaged NiBabel at <a class="reference external" href="http://neuro.debian.net/pkgs/python-nibabel.html">NiBabel NeuroDebian</a>.
+Please follow the instructions on the <a class="reference external" href="http://neuro.debian.net">NeuroDebian</a> website on how to access
+their repositories. Once this is done, installing NiBabel is:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>apt-get update
+apt-get install python-nibabel
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="install-from-source">
+<h2>Install from source<a class="headerlink" href="#install-from-source" title="Permalink to this headline">¶</a></h2>
+<p>If no installer or package is provided for your platfom, you can install
+NiBabel from source.</p>
+<div class="section" id="requirements">
+<h3>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><a class="reference external" href="https://www.python.org">Python</a> 2.6 or greater</li>
+<li><a class="reference external" href="http://www.numpy.org">NumPy</a> 1.5 or greater</li>
+<li><a class="reference external" href="https://www.scipy.org">SciPy</a> (for full SPM-ANALYZE support)</li>
+<li><a class="reference external" href="http://www.pydicom.org/">PyDICOM</a> 0.9.7 or greater (for DICOM support)</li>
+<li><a class="reference external" href="http://pythonware.com/products/pil/">Python Imaging Library</a> (for PNG conversion in DICOMFS)</li>
+<li><a class="reference external" href="http://somethingaboutorange.com/mrl/projects/nose">nose</a> 0.11 or greater (to run the tests)</li>
+<li><a class="reference external" href="http://sphinx-doc.org/">sphinx</a> (to build the documentation)</li>
+</ul>
+</div>
+<div class="section" id="get-the-sources">
+<h3>Get the sources<a class="headerlink" href="#get-the-sources" title="Permalink to this headline">¶</a></h3>
+<p>The latest release is always available from <a class="reference external" href="https://pypi.python.org/pypi/nibabel">NiBabel pypi</a>.</p>
+<p>Alternatively, you can download a tarball of the latest development snapshot
+(i.e. the current state of the <em>master</em> branch of the NiBabel source code
+repository) from the <a class="reference external" href="https://github.com/nipy/nibabel">NiBabel github</a> page.</p>
+<p>If you want to have access to the full NiBabel history and the latest
+development code, do a full clone (aka checkout) of the NiBabel
+repository:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>git clone git://github.com/nipy/nibabel.git
+</pre></div>
+</div>
+<p>or:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>git clone https://github.com/nipy/nibabel.git
+</pre></div>
+</div>
+<p>(The first may be faster, the second more likely to work behind a firewall).</p>
+</div>
+<div class="section" id="id2">
+<h3>Installation<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Just install the modules by invoking:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>sudo python setup.py install
+</pre></div>
+</div>
+<p>If sudo is not configured (or even installed) you might have to use
+<code class="docutils literal"><span class="pre">su</span></code> instead.</p>
+</div>
+<div class="section" id="validating-your-install">
+<h3>Validating your install<a class="headerlink" href="#validating-your-install" title="Permalink to this headline">¶</a></h3>
+<p>For a basic test of your installation, fire up Python and try importing the module to see if everything is fine.
+It should look something like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Python 2.7.8 (v2.7.8:ee879c0ffa11, Jun 29 2014, 21:07:35)
+[GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin
+Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
+&gt;&gt;&gt; import nibabel
+&gt;&gt;&gt;
+</pre></div>
+</div>
+<p>To run the nibabel test suite, from the terminal run <code class="docutils literal"><span class="pre">nosetests</span> <span class="pre">nibabel</span></code> or <code class="docutils literal"><span class="pre">python</span> <span class="pre">-c</span> <span class="pre">&quot;import</span> <span class="pre">nibabel;</span> <span class="pre">nibabel.test()</span></code>.</p>
+<p>To run an extended test suite that validates <code class="docutils literal"><span class="pre">nibabel</span></code> for long-running and resource-intensive cases, please see <a class="reference internal" href="devel/advanced_testing.html#advanced-testing"><span>Advanced Testing</span></a>.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2006-2015, Matthew Brett, Michael Hanke and Eric Larson &lt;nipy-devel@neuroimaging.scipy.org&gt;.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+  </body>
+</html>

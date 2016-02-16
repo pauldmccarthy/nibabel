@@ -1,0 +1,551 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Neuroimaging in Python &mdash; NiBabel 2.0.2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/nibabel.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="NiBabel 2.0.2 documentation" href="../index.html" />
+    <link rel="up" title="API Documentation" href="../api.html" />
+    <link rel="next" title="environment" href="nibabel.environment.html" />
+    <link rel="prev" title="casting" href="nibabel.casting.html" />
+  <meta name="keywords" content="nipy, neuroimaging, python, neuroscience">
+
+  </head>
+  <body role="document">
+<div style="background-color: white; text-align: left; padding-left: 150px; padding-bottom:50px; padding-top:20px; background-image: url(../_static/nipy-logo-bg-138x120.png); background-repeat: no-repeat;">
+<h1>NiBabel</h1>
+<h3 style="margin-top:-5px;color:#2f83c8">Access a cacophony of neuro-imaging file formats</h3>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="nibabel.environment.html" title="environment"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="nibabel.casting.html" title="casting"
+             accesskey="P">previous</a> |</li>
+  <li><a href="http://nipy.org/">Community</a> |&nbsp;</li>
+  <li><a href="../index.html">NiBabel Home</a> |&nbsp;</li>
+  <li><a href="https://mail.python.org/mailman/listinfo/neuroimaging">Mailing list</a> |&nbsp;</li>
+  <li><a href="legal.html">License</a> |&nbsp;</li>
+
+          <li class="nav-item nav-item-1"><a href="../api.html" accesskey="U">API Documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">data</span></code></a><ul>
+<li><a class="reference internal" href="#bomber"><code class="docutils literal"><span class="pre">Bomber</span></code></a></li>
+<li><a class="reference internal" href="#bombererror"><code class="docutils literal"><span class="pre">BomberError</span></code></a></li>
+<li><a class="reference internal" href="#dataerror"><code class="docutils literal"><span class="pre">DataError</span></code></a></li>
+<li><a class="reference internal" href="#datasource"><code class="docutils literal"><span class="pre">Datasource</span></code></a></li>
+<li><a class="reference internal" href="#versioneddatasource"><code class="docutils literal"><span class="pre">VersionedDatasource</span></code></a></li>
+<li><a class="reference internal" href="#datasource-or-bomber">datasource_or_bomber</a></li>
+<li><a class="reference internal" href="#find-data-dir">find_data_dir</a></li>
+<li><a class="reference internal" href="#get-data-path">get_data_path</a></li>
+<li><a class="reference internal" href="#make-datasource">make_datasource</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="nibabel.casting.html"
+                        title="previous chapter"><code class="docutils literal"><span class="pre">casting</span></code></a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="nibabel.environment.html"
+                        title="next chapter"><code class="docutils literal"><span class="pre">environment</span></code></a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/reference/nibabel.data.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<p><img src="../_static/reggie.png" alt="Reggie -- the one" /></p>
+
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-nibabel.data">
+<span id="data"></span><h1><code class="xref py py-mod docutils literal"><span class="pre">data</span></code><a class="headerlink" href="#module-nibabel.data" title="Permalink to this headline">¶</a></h1>
+<p>Utilities to find files from NIPY data packages</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#nibabel.data.Bomber" title="nibabel.data.Bomber"><code class="xref py py-obj docutils literal"><span class="pre">Bomber</span></code></a>(name,&nbsp;msg)</td>
+<td>Class to raise an informative error when used</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#nibabel.data.BomberError" title="nibabel.data.BomberError"><code class="xref py py-obj docutils literal"><span class="pre">BomberError</span></code></a></td>
+<td>Error when trying to access Bomber instance</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#nibabel.data.DataError" title="nibabel.data.DataError"><code class="xref py py-obj docutils literal"><span class="pre">DataError</span></code></a></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#nibabel.data.Datasource" title="nibabel.data.Datasource"><code class="xref py py-obj docutils literal"><span class="pre">Datasource</span></code></a>(base_path)</td>
+<td>Simple class to add base path to relative path</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#nibabel.data.VersionedDatasource" title="nibabel.data.VersionedDatasource"><code class="xref py py-obj docutils literal"><span class="pre">VersionedDatasource</span></code></a>(base_path[,&nbsp;config_filename])</td>
+<td>Datasource with version information in config file</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#nibabel.data.datasource_or_bomber" title="nibabel.data.datasource_or_bomber"><code class="xref py py-obj docutils literal"><span class="pre">datasource_or_bomber</span></code></a>(pkg_def,&nbsp;**options)</td>
+<td>Return a viable datasource or a Bomber</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#nibabel.data.find_data_dir" title="nibabel.data.find_data_dir"><code class="xref py py-obj docutils literal"><span class="pre">find_data_dir</span></code></a>(root_dirs,&nbsp;*names)</td>
+<td>Find relative path given path prefixes to search</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#nibabel.data.get_data_path" title="nibabel.data.get_data_path"><code class="xref py py-obj docutils literal"><span class="pre">get_data_path</span></code></a>()</td>
+<td>Return specified or guessed locations of NIPY data files</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#nibabel.data.make_datasource" title="nibabel.data.make_datasource"><code class="xref py py-obj docutils literal"><span class="pre">make_datasource</span></code></a>(pkg_def,&nbsp;**kwargs)</td>
+<td>Return datasource defined by <cite>pkg_def</cite> as found in <cite>data_path</cite></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="bomber">
+<h2><a class="reference internal" href="#nibabel.data.Bomber" title="nibabel.data.Bomber"><code class="xref py py-class docutils literal"><span class="pre">Bomber</span></code></a><a class="headerlink" href="#bomber" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="nibabel.data.Bomber">
+<em class="property">class </em><code class="descclassname">nibabel.data.</code><code class="descname">Bomber</code><span class="sig-paren">(</span><em>name</em>, <em>msg</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.data.Bomber" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Class to raise an informative error when used</p>
+<dl class="method">
+<dt id="nibabel.data.Bomber.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>name</em>, <em>msg</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.data.Bomber.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="bombererror">
+<h2><a class="reference internal" href="#nibabel.data.BomberError" title="nibabel.data.BomberError"><code class="xref py py-class docutils literal"><span class="pre">BomberError</span></code></a><a class="headerlink" href="#bombererror" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="nibabel.data.BomberError">
+<em class="property">class </em><code class="descclassname">nibabel.data.</code><code class="descname">BomberError</code><a class="headerlink" href="#nibabel.data.BomberError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nibabel.data.DataError" title="nibabel.data.DataError"><code class="xref py py-class docutils literal"><span class="pre">nibabel.data.DataError</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">exceptions.AttributeError</span></code></p>
+<p>Error when trying to access Bomber instance</p>
+<p>Should be instance of AttributeError to allow Python 3 inspect to do various
+<code class="docutils literal"><span class="pre">hasattr</span></code> checks without raising an error</p>
+<dl class="method">
+<dt id="nibabel.data.BomberError.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.data.BomberError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.__init__(...) initializes x; see help(type(x)) for signature</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="dataerror">
+<h2><a class="reference internal" href="#nibabel.data.DataError" title="nibabel.data.DataError"><code class="xref py py-class docutils literal"><span class="pre">DataError</span></code></a><a class="headerlink" href="#dataerror" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="nibabel.data.DataError">
+<em class="property">class </em><code class="descclassname">nibabel.data.</code><code class="descname">DataError</code><a class="headerlink" href="#nibabel.data.DataError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+<dl class="method">
+<dt id="nibabel.data.DataError.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.data.DataError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.__init__(...) initializes x; see help(type(x)) for signature</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="datasource">
+<h2><a class="reference internal" href="#nibabel.data.Datasource" title="nibabel.data.Datasource"><code class="xref py py-class docutils literal"><span class="pre">Datasource</span></code></a><a class="headerlink" href="#datasource" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="nibabel.data.Datasource">
+<em class="property">class </em><code class="descclassname">nibabel.data.</code><code class="descname">Datasource</code><span class="sig-paren">(</span><em>base_path</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.data.Datasource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Simple class to add base path to relative path</p>
+<p>Initialize datasource</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>base_path</strong> : str</p>
+<blockquote class="last">
+<div><p>path to prepend to all relative paths</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span> <span class="k">as</span> <span class="n">pjoin</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">repo</span> <span class="o">=</span> <span class="n">Datasource</span><span class="p">(</span><span class="n">pjoin</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;path&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fname</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">get_filename</span><span class="p">(</span><span class="s1">&#39;somedir&#39;</span><span class="p">,</span> <span class="s1">&#39;afile.txt&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fname</span> <span class="o">==</span> <span class="n">pjoin</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="s1">&#39;somedir&#39;</span><span class="p">,</span> <span class="s1">&#39;afile.txt&#39;</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="nibabel.data.Datasource.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>base_path</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.data.Datasource.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize datasource</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>base_path</strong> : str</p>
+<blockquote class="last">
+<div><p>path to prepend to all relative paths</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span> <span class="k">as</span> <span class="n">pjoin</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">repo</span> <span class="o">=</span> <span class="n">Datasource</span><span class="p">(</span><span class="n">pjoin</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;path&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fname</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">get_filename</span><span class="p">(</span><span class="s1">&#39;somedir&#39;</span><span class="p">,</span> <span class="s1">&#39;afile.txt&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fname</span> <span class="o">==</span> <span class="n">pjoin</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="s1">&#39;somedir&#39;</span><span class="p">,</span> <span class="s1">&#39;afile.txt&#39;</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="nibabel.data.Datasource.get_filename">
+<code class="descname">get_filename</code><span class="sig-paren">(</span><em>*path_parts</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.data.Datasource.get_filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepend base path to <cite>*path_parts</cite></p>
+<p>We make no check whether the returned path exists.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>*path_parts</strong> : sequence of strings</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>fname</strong> : str</p>
+<blockquote class="last">
+<div><p>result of <code class="docutils literal"><span class="pre">os.path.join(*path_parts),</span> <span class="pre">with</span>
+<span class="pre">``self.base_path</span></code> prepended</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="nibabel.data.Datasource.list_files">
+<code class="descname">list_files</code><span class="sig-paren">(</span><em>relative=True</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.data.Datasource.list_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recursively list the files in the data source directory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>relative: bool, optional</strong> :</p>
+<blockquote>
+<div><p>If True, path returned are relative to the base paht of
+the data source.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>file_list: list of strings</strong> :</p>
+<blockquote class="last">
+<div><p>List of the paths of all the files in the data source.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="versioneddatasource">
+<h2><a class="reference internal" href="#nibabel.data.VersionedDatasource" title="nibabel.data.VersionedDatasource"><code class="xref py py-class docutils literal"><span class="pre">VersionedDatasource</span></code></a><a class="headerlink" href="#versioneddatasource" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="nibabel.data.VersionedDatasource">
+<em class="property">class </em><code class="descclassname">nibabel.data.</code><code class="descname">VersionedDatasource</code><span class="sig-paren">(</span><em>base_path</em>, <em>config_filename=None</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.data.VersionedDatasource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nibabel.data.Datasource" title="nibabel.data.Datasource"><code class="xref py py-class docutils literal"><span class="pre">nibabel.data.Datasource</span></code></a></p>
+<p>Datasource with version information in config file</p>
+<p>Initialize versioned datasource</p>
+<p>We assume that there is a configuration file with version
+information in datasource directory tree.</p>
+<p>The configuration file contains an entry like:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">DEFAULT</span><span class="p">]</span>
+<span class="n">version</span> <span class="o">=</span> <span class="mf">0.3</span>
+</pre></div>
+</div>
+<p>The version should have at least a major and a minor version
+number in the form above.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>base_path</strong> : str</p>
+<blockquote>
+<div><p>path to prepend to all relative paths</p>
+</div></blockquote>
+<p><strong>config_filaname</strong> : None or str</p>
+<blockquote class="last">
+<div><p>relative path to configuration file containing version</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="nibabel.data.VersionedDatasource.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>base_path</em>, <em>config_filename=None</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.data.VersionedDatasource.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize versioned datasource</p>
+<p>We assume that there is a configuration file with version
+information in datasource directory tree.</p>
+<p>The configuration file contains an entry like:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">DEFAULT</span><span class="p">]</span>
+<span class="n">version</span> <span class="o">=</span> <span class="mf">0.3</span>
+</pre></div>
+</div>
+<p>The version should have at least a major and a minor version
+number in the form above.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>base_path</strong> : str</p>
+<blockquote>
+<div><p>path to prepend to all relative paths</p>
+</div></blockquote>
+<p><strong>config_filaname</strong> : None or str</p>
+<blockquote class="last">
+<div><p>relative path to configuration file containing version</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="datasource-or-bomber">
+<h2>datasource_or_bomber<a class="headerlink" href="#datasource-or-bomber" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="nibabel.data.datasource_or_bomber">
+<code class="descclassname">nibabel.data.</code><code class="descname">datasource_or_bomber</code><span class="sig-paren">(</span><em>pkg_def</em>, <em>**options</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.data.datasource_or_bomber" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a viable datasource or a Bomber</p>
+<p>This is to allow module level creation of datasource objects.  We
+create the objects, so that, if the data exist, and are the correct
+version, the objects are valid datasources, otherwise, they
+raise an error on access, warning about the lack of data or the
+version numbers.</p>
+<p>The parameters are as for <code class="docutils literal"><span class="pre">make_datasource</span></code> in this module.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pkg_def</strong> : dict</p>
+<blockquote>
+<div><p>dict containing at least key &#8216;relpath&#8217;. Can optioanlly have keys &#8216;name&#8217;
+(package name),  &#8216;install hint&#8217; (for helpful error messages) and &#8216;min
+version&#8217; giving the minimum necessary version string for the package.</p>
+</div></blockquote>
+<p><strong>data_path</strong> : sequence of strings or None, optional</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>ds</strong> : datasource or <code class="docutils literal"><span class="pre">Bomber</span></code> instance</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="find-data-dir">
+<h2>find_data_dir<a class="headerlink" href="#find-data-dir" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="nibabel.data.find_data_dir">
+<code class="descclassname">nibabel.data.</code><code class="descname">find_data_dir</code><span class="sig-paren">(</span><em>root_dirs</em>, <em>*names</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.data.find_data_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find relative path given path prefixes to search</p>
+<p>We raise a DataError if we can&#8217;t find the relative path</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>root_dirs</strong> : sequence of strings</p>
+<blockquote>
+<div><p>sequence of paths in which to search for data directory</p>
+</div></blockquote>
+<p><strong>*names</strong> : sequence of strings</p>
+<blockquote>
+<div><p>sequence of strings naming directory to find. The name to search
+for is given by <code class="docutils literal"><span class="pre">os.path.join(*names)</span></code></p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>data_dir</strong> : str</p>
+<blockquote class="last">
+<div><p>full path (root path added to <cite>*names</cite> above)</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="get-data-path">
+<h2>get_data_path<a class="headerlink" href="#get-data-path" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="nibabel.data.get_data_path">
+<code class="descclassname">nibabel.data.</code><code class="descname">get_data_path</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.data.get_data_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return specified or guessed locations of NIPY data files</p>
+<p>The algorithm is to return paths, extracted from strings, where
+strings are found in the following order:</p>
+<ol class="arabic simple">
+<li>The contents of environment variable <code class="docutils literal"><span class="pre">NIPY_DATA_PATH</span></code></li>
+<li>Any section = <code class="docutils literal"><span class="pre">DATA</span></code>, key = <code class="docutils literal"><span class="pre">path</span></code> value in a <code class="docutils literal"><span class="pre">config.ini</span></code>
+file in your nipy user directory (found with
+<code class="docutils literal"><span class="pre">get_nipy_user_dir()</span></code>)</li>
+<li>Any section = <code class="docutils literal"><span class="pre">DATA</span></code>, key = <code class="docutils literal"><span class="pre">path</span></code> value in any files found
+with a <code class="docutils literal"><span class="pre">sorted(glob.glob(os.path.join(sys_dir,</span> <span class="pre">'*.ini')))</span></code>
+search, where <code class="docutils literal"><span class="pre">sys_dir</span></code> is found with <code class="docutils literal"><span class="pre">get_nipy_system_dir()</span></code></li>
+<li>If <code class="docutils literal"><span class="pre">sys.prefix</span></code> is <code class="docutils literal"><span class="pre">/usr</span></code>, we add
+<code class="docutils literal"><span class="pre">/usr/local/share/nipy</span></code>. We need this because Python 2.6 in
+Debian / Ubuntu does default installs to <code class="docutils literal"><span class="pre">/usr/local</span></code>.</li>
+<li>The result of <code class="docutils literal"><span class="pre">get_nipy_user_dir()</span></code></li>
+</ol>
+<p>Therefore, any paths found in <code class="docutils literal"><span class="pre">NIPY_DATA_PATH</span></code> will be searched
+before paths found in the user directory <code class="docutils literal"><span class="pre">config.ini</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>None</strong> :</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>paths</strong> : sequence of paths</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>We have to add <code class="docutils literal"><span class="pre">/usr/local/share/nipy</span></code> if sys.prefix is <code class="docutils literal"><span class="pre">/usr</span></code>,
+because Debian has patched distutils in Python 2.6 to do default
+distutils installs there:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://www.debian.org/doc/packaging-manuals/python-policy/ap-packaging_tools.html#s-distutils">https://www.debian.org/doc/packaging-manuals/python-policy/ap-packaging_tools.html#s-distutils</a></li>
+<li><a class="reference external" href="https://www.mail-archive.com/debian-python&#64;lists.debian.org/msg05084.html">https://www.mail-archive.com/debian-python&#64;lists.debian.org/msg05084.html</a></li>
+</ul>
+<p class="rubric">Examples</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pth</span> <span class="o">=</span> <span class="n">get_data_path</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="make-datasource">
+<h2>make_datasource<a class="headerlink" href="#make-datasource" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="nibabel.data.make_datasource">
+<code class="descclassname">nibabel.data.</code><code class="descname">make_datasource</code><span class="sig-paren">(</span><em>pkg_def</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.data.make_datasource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return datasource defined by <cite>pkg_def</cite> as found in <cite>data_path</cite></p>
+<p><cite>data_path</cite> is the only allowed keyword argument.</p>
+<p><cite>pkg_def</cite> is a dictionary with at least one key - &#8216;relpath&#8217;.  &#8216;relpath&#8217; is a
+relative path with unix forward slash separators.</p>
+<p>The relative path to the data is found with:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">names</span> <span class="o">=</span> <span class="n">pkg_def</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="n">rel_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We search for this relative path in the list of paths given by <cite>data_path</cite>.
+By default <cite>data_path</cite> is given by <code class="docutils literal"><span class="pre">get_data_path()</span></code> in this module.</p>
+<p>If we can&#8217;t find the relative path, raise a DataError</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pkg_def</strong> : dict</p>
+<blockquote>
+<div><p>dict containing at least the key &#8216;relpath&#8217;. &#8216;relpath&#8217; is the data path of
+the package relative to <cite>data_path</cite>.  It is in unix path format (using
+forward slashes as directory separators).  <cite>pkg_def</cite> can also contain
+optional keys &#8216;name&#8217; (the name of the package), and / or a key &#8216;install
+hint&#8217; that we use in the returned error message from trying to use the
+resulting datasource</p>
+</div></blockquote>
+<p><strong>data_path</strong> : sequence of strings or None, optional</p>
+<blockquote>
+<div><p>sequence of paths in which to search for data.  If None (the
+default), then use <code class="docutils literal"><span class="pre">get_data_path()</span></code></p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>datasource</strong> : <code class="docutils literal"><span class="pre">VersionedDatasource</span></code></p>
+<blockquote class="last">
+<div><p>An initialized <code class="docutils literal"><span class="pre">VersionedDatasource</span></code> instance</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2006-2015, Matthew Brett, Michael Hanke and Eric Larson &lt;nipy-devel@neuroimaging.scipy.org&gt;.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+  </body>
+</html>

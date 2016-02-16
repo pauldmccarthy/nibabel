@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Neuroimaging in Python &mdash; NiBabel 2.0.2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/nibabel.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="NiBabel 2.0.2 documentation" href="../index.html" />
+    <link rel="up" title="DICOM concepts and implementations" href="dicom.html" />
+    <link rel="next" title="API Documentation" href="../api.html" />
+    <link rel="prev" title="SPM DICOM conversion" href="spm_dicom.html" />
+  <meta name="keywords" content="nipy, neuroimaging, python, neuroscience">
+
+  </head>
+  <body role="document">
+<div style="background-color: white; text-align: left; padding-left: 150px; padding-bottom:50px; padding-top:20px; background-image: url(../_static/nipy-logo-bg-138x120.png); background-repeat: no-repeat;">
+<h1>NiBabel</h1>
+<h3 style="margin-top:-5px;color:#2f83c8">Access a cacophony of neuro-imaging file formats</h3>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../api.html" title="API Documentation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="spm_dicom.html" title="SPM DICOM conversion"
+             accesskey="P">previous</a> |</li>
+  <li><a href="http://nipy.org/">Community</a> |&nbsp;</li>
+  <li><a href="../index.html">NiBabel Home</a> |&nbsp;</li>
+  <li><a href="https://mail.python.org/mailman/listinfo/neuroimaging">Mailing list</a> |&nbsp;</li>
+  <li><a href="legal.html">License</a> |&nbsp;</li>
+
+          <li class="nav-item nav-item-1"><a href="dicom.html" accesskey="U">DICOM concepts and implementations</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">dcm2nii algorithms</a><ul>
+<li><a class="reference internal" href="#compiling-dcm2nii">Compiling dcm2nii</a></li>
+<li><a class="reference internal" href="#some-tag-modifications">Some tag modifications</a></li>
+<li><a class="reference internal" href="#sorting-slices-into-volumes">Sorting slices into volumes</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="spm_dicom.html"
+                        title="previous chapter">SPM DICOM conversion</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../api.html"
+                        title="next chapter">API Documentation</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/dicom/dcm2nii_algorithms.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<p><img src="../_static/reggie.png" alt="Reggie -- the one" /></p>
+
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="dcm2nii-algorithms">
+<span id="id1"></span><h1>dcm2nii algorithms<a class="headerlink" href="#dcm2nii-algorithms" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="http://www.cabiatl.com/mricro/mricron/dcm2nii.html">dcm2nii</a> is an open source <a class="reference external" href="http://medical.nema.org/">DICOM</a> to <a class="reference external" href="http://nifti.nimh.nih.gov">nifti</a> conversion program, written
+by Chris Rorden, in Delphi (object orientated pascal).  It&#8217;s part of
+Chris&#8217; popular <a class="reference external" href="http://www.mccauslandcenter.sc.edu/mricro/mricron/">mricron</a> collection of programs.  The source appears to
+be best found on the <a class="reference external" href="https://www.nitrc.org/projects/mricron">mricron NITRC site</a>.  It&#8217;s <a class="reference external" href="http://www.opensource.org/licenses/bsd-license.php">BSD</a> licensed.</p>
+<p>These are working notes looking at Chris&#8217; algorithms for working with
+DICOM.</p>
+<div class="section" id="compiling-dcm2nii">
+<h2>Compiling dcm2nii<a class="headerlink" href="#compiling-dcm2nii" title="Permalink to this headline">¶</a></h2>
+<p>Follow the download / install instructions at the
+<a class="reference external" href="http://www.lazarus.freepascal.org/">http://www.lazarus.freepascal.org/</a> site.  I was on a Mac, and folowed the
+instructions here:
+<a class="reference external" href="http://wiki.lazarus.freepascal.org/Installing_Lazarus_on_MacOS_X">http://wiki.lazarus.freepascal.org/Installing_Lazarus_on_MacOS_X</a> .  Default
+build with version 0.9.28.2 gave an error linking against Carbon, so I needed to
+download a snapshot of fixed Lazarus 0.9.28.3 from
+<a class="reference external" href="http://www.hu.freepascal.org/lazarus">http://www.hu.freepascal.org/lazarus</a> . Open <code class="docutils literal"><span class="pre">&lt;mricron&gt;/dcm2nii/dcm2nii.lpi</span></code>
+using the Lazarus GUI.  Follow instructions for compiler setup in the mricron
+<code class="docutils literal"><span class="pre">Readme.txt</span></code>; in particular I set other compiler options to:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>-k-macosx_version_min -k10.5
+-XR/Developer/SDKs/MacOSX10.5.sdk/
+</pre></div>
+</div>
+<p>Further inspiration for building also came from the <code class="docutils literal"><span class="pre">debian/rules</span></code> file in
+Michael Hanke&#8217;s mricron debian package:
+<a class="reference external" href="http://neuro.debian.net/debian/pool/main/m/mricron/">http://neuro.debian.net/debian/pool/main/m/mricron/</a></p>
+</div>
+<div class="section" id="some-tag-modifications">
+<h2>Some tag modifications<a class="headerlink" href="#some-tag-modifications" title="Permalink to this headline">¶</a></h2>
+<p>Note - Chris tells me that <code class="docutils literal"><span class="pre">dicomfastread.pas</span></code> was an attempt to do a fast
+dicom read that is not yet fully compatible, and that the algorithm used is in
+fact <code class="docutils literal"><span class="pre">dicomcompat.pas</span></code>.</p>
+<p>Looking in the source file <code class="docutils literal"><span class="pre">&lt;mricron&gt;/dcm2nii/dicomfastread.pas</span></code>.</p>
+<p>Named fields here are as from <a class="reference internal" href="dicom_fields.html#dicom-fields"><span>DICOM fields</span></a></p>
+<ul>
+<li><p class="first">If &#8216;MOSAIC&#8217; is the last string in &#8216;ImageType&#8217;, this is a mosaic</p>
+</li>
+<li><p class="first">&#8216;DateTime&#8217; field is combination of &#8216;StudyDate&#8217; and &#8216;StudyTime&#8217;; fixes
+in file <code class="docutils literal"><span class="pre">dicomtypes.pas</span></code> for different scanner date / time formats.</p>
+</li>
+<li><p class="first">AcquisitionNumber read as normal, but then set to 1, if this a mosaic
+image, as set above.</p>
+</li>
+<li><p class="first">If &#8216;EchoNumbers&#8217; &gt; 0 and &lt; 16, add &#8216;EchoNumber&#8217; * 100 to the
+&#8216;AcquisitionNumber&#8217; - presumably to identify different echos from the
+same series as being different series.</p>
+</li>
+<li><p class="first">If &#8216;ScanningSequence&#8217; sequence contains &#8216;RM&#8217;, add 100 to the
+&#8216;SeriesNumber&#8217; - maybe to differentiate research and not-research
+scans with the same acquisition number.</p>
+</li>
+<li><p class="first">is_4D flag labeling DICOM file as a 4D file:</p>
+<blockquote>
+<div><ul class="simple">
+<li>There&#8217;s a Philips private tag (2001, 1018) - labeled &#8216;Number of
+Slices MR&#8217; by <a class="reference external" href="http://www.pydicom.org/">pydicom</a> call this <code class="docutils literal"><span class="pre">NS</span></code></li>
+<li>If <code class="docutils literal"><span class="pre">NS&gt;0</span></code> and &#8216;NumberofTemporalPositions&#8217; &gt; 0, and
+&#8216;NumberOfFrames&#8217; is &gt; 1</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="sorting-slices-into-volumes">
+<h2>Sorting slices into volumes<a class="headerlink" href="#sorting-slices-into-volumes" title="Permalink to this headline">¶</a></h2>
+<p>Looking in the source file <code class="docutils literal"><span class="pre">&lt;mricron&gt;/dcm2nii/sortdicom.pas</span></code>.</p>
+<p>In function <code class="docutils literal"><span class="pre">ShellSortDCM</span></code>:</p>
+<p>Sort compares two dicom images, call them <code class="docutils literal"><span class="pre">dcm1</span></code> and <code class="docutils literal"><span class="pre">dcm2</span></code>.   Tests are:</p>
+<ol class="arabic">
+<li><p class="first">Are the two images &#8216;repeats&#8217; - defined by same &#8216;InstanceNumber&#8217;
+(0020, 0013), and &#8216;AcquisitionNumber&#8217; (0020, 0012) and &#8216;SeriesNumber&#8217;
+(0020, 0011) and a combination of &#8216;StudyDate&#8217; and &#8216;StudyTime&#8217;)?  Then
+report an error about files having the same index, flag repeated values.</p>
+</li>
+<li><p class="first">Is <code class="docutils literal"><span class="pre">dcm1</span></code> less than <code class="docutils literal"><span class="pre">dcm2</span></code>, defined with comparisons in the
+following order:</p>
+<ol class="arabic simple">
+<li>StudyDate/Time</li>
+<li>SeriesNumber</li>
+<li>AcquisitionNumber</li>
+<li>InstanceNumber</li>
+</ol>
+<p>This should obviously only ever be &gt; or &lt;, not ==, because of the
+first check.</p>
+</li>
+</ol>
+<p>Next remove repeated values as found in the first step above.</p>
+<p>There&#8217;s a function ``</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2006-2015, Matthew Brett, Michael Hanke and Eric Larson &lt;nipy-devel@neuroimaging.scipy.org&gt;.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+  </body>
+</html>

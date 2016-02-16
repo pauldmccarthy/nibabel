@@ -1,0 +1,37 @@
+.. AUTO-GENERATED FILE -- DO NOT EDIT!
+
+:mod:`loadsave`
+===============
+.. automodule:: nibabel.loadsave
+
+.. currentmodule:: nibabel.loadsave
+.. autosummary::
+
+   guessed_image_type
+   load
+   save
+   which_analyze_type
+
+
+.. currentmodule:: nibabel.loadsave
+
+guessed_image_type
+~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: guessed_image_type
+
+load
+~~~~
+
+.. autofunction:: load
+
+save
+~~~~
+
+.. autofunction:: save
+
+which_analyze_type
+~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: which_analyze_type
+

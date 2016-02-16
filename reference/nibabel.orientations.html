@@ -1,0 +1,518 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Neuroimaging in Python &mdash; NiBabel 2.0.2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/nibabel.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="NiBabel 2.0.2 documentation" href="../index.html" />
+    <link rel="up" title="API Documentation" href="../api.html" />
+    <link rel="next" title="quaternions" href="nibabel.quaternions.html" />
+    <link rel="prev" title="loadsave" href="nibabel.loadsave.html" />
+  <meta name="keywords" content="nipy, neuroimaging, python, neuroscience">
+
+  </head>
+  <body role="document">
+<div style="background-color: white; text-align: left; padding-left: 150px; padding-bottom:50px; padding-top:20px; background-image: url(../_static/nipy-logo-bg-138x120.png); background-repeat: no-repeat;">
+<h1>NiBabel</h1>
+<h3 style="margin-top:-5px;color:#2f83c8">Access a cacophony of neuro-imaging file formats</h3>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="nibabel.quaternions.html" title="quaternions"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="nibabel.loadsave.html" title="loadsave"
+             accesskey="P">previous</a> |</li>
+  <li><a href="http://nipy.org/">Community</a> |&nbsp;</li>
+  <li><a href="../index.html">NiBabel Home</a> |&nbsp;</li>
+  <li><a href="https://mail.python.org/mailman/listinfo/neuroimaging">Mailing list</a> |&nbsp;</li>
+  <li><a href="legal.html">License</a> |&nbsp;</li>
+
+          <li class="nav-item nav-item-1"><a href="../api.html" accesskey="U">API Documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">orientations</span></code></a><ul>
+<li><a class="reference internal" href="#orientationerror"><code class="docutils literal"><span class="pre">OrientationError</span></code></a></li>
+<li><a class="reference internal" href="#aff2axcodes">aff2axcodes</a></li>
+<li><a class="reference internal" href="#apply-orientation">apply_orientation</a></li>
+<li><a class="reference internal" href="#axcodes2ornt">axcodes2ornt</a></li>
+<li><a class="reference internal" href="#flip-axis">flip_axis</a></li>
+<li><a class="reference internal" href="#inv-ornt-aff">inv_ornt_aff</a></li>
+<li><a class="reference internal" href="#io-orientation">io_orientation</a></li>
+<li><a class="reference internal" href="#ornt2axcodes">ornt2axcodes</a></li>
+<li><a class="reference internal" href="#ornt-transform">ornt_transform</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="nibabel.loadsave.html"
+                        title="previous chapter"><code class="docutils literal"><span class="pre">loadsave</span></code></a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="nibabel.quaternions.html"
+                        title="next chapter"><code class="docutils literal"><span class="pre">quaternions</span></code></a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/reference/nibabel.orientations.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<p><img src="../_static/reggie.png" alt="Reggie -- the one" /></p>
+
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-nibabel.orientations">
+<span id="orientations"></span><h1><code class="xref py py-mod docutils literal"><span class="pre">orientations</span></code><a class="headerlink" href="#module-nibabel.orientations" title="Permalink to this headline">¶</a></h1>
+<p>Utilities for calculating and applying affine orientations</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#nibabel.orientations.OrientationError" title="nibabel.orientations.OrientationError"><code class="xref py py-obj docutils literal"><span class="pre">OrientationError</span></code></a></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#nibabel.orientations.aff2axcodes" title="nibabel.orientations.aff2axcodes"><code class="xref py py-obj docutils literal"><span class="pre">aff2axcodes</span></code></a>(aff[,&nbsp;labels,&nbsp;tol])</td>
+<td>axis direction codes for affine <cite>aff</cite></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#nibabel.orientations.apply_orientation" title="nibabel.orientations.apply_orientation"><code class="xref py py-obj docutils literal"><span class="pre">apply_orientation</span></code></a>(arr,&nbsp;ornt)</td>
+<td>Apply transformations implied by <cite>ornt</cite> to the first</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#nibabel.orientations.axcodes2ornt" title="nibabel.orientations.axcodes2ornt"><code class="xref py py-obj docutils literal"><span class="pre">axcodes2ornt</span></code></a>(axcodes[,&nbsp;labels])</td>
+<td>Convert axis codes <cite>axcodes</cite> to an orientation</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#nibabel.orientations.flip_axis" title="nibabel.orientations.flip_axis"><code class="xref py py-obj docutils literal"><span class="pre">flip_axis</span></code></a>(arr[,&nbsp;axis])</td>
+<td>Flip contents of <cite>axis</cite> in array <cite>arr</cite></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#nibabel.orientations.inv_ornt_aff" title="nibabel.orientations.inv_ornt_aff"><code class="xref py py-obj docutils literal"><span class="pre">inv_ornt_aff</span></code></a>(ornt,&nbsp;shape)</td>
+<td>Affine transform reversing transforms implied in <cite>ornt</cite></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#nibabel.orientations.io_orientation" title="nibabel.orientations.io_orientation"><code class="xref py py-obj docutils literal"><span class="pre">io_orientation</span></code></a>(affine[,&nbsp;tol])</td>
+<td>Orientation of input axes in terms of output axes for <cite>affine</cite></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#nibabel.orientations.ornt2axcodes" title="nibabel.orientations.ornt2axcodes"><code class="xref py py-obj docutils literal"><span class="pre">ornt2axcodes</span></code></a>(ornt[,&nbsp;labels])</td>
+<td>Convert orientation <cite>ornt</cite> to labels for axis directions</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#nibabel.orientations.ornt_transform" title="nibabel.orientations.ornt_transform"><code class="xref py py-obj docutils literal"><span class="pre">ornt_transform</span></code></a>(start_ornt,&nbsp;end_ornt)</td>
+<td>Return the orientation that transforms from <cite>start_ornt</cite> to <cite>end_ornt</cite>.</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="orientationerror">
+<h2><a class="reference internal" href="#nibabel.orientations.OrientationError" title="nibabel.orientations.OrientationError"><code class="xref py py-class docutils literal"><span class="pre">OrientationError</span></code></a><a class="headerlink" href="#orientationerror" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="nibabel.orientations.OrientationError">
+<em class="property">class </em><code class="descclassname">nibabel.orientations.</code><code class="descname">OrientationError</code><a class="headerlink" href="#nibabel.orientations.OrientationError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+<dl class="method">
+<dt id="nibabel.orientations.OrientationError.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.orientations.OrientationError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.__init__(...) initializes x; see help(type(x)) for signature</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="aff2axcodes">
+<h2>aff2axcodes<a class="headerlink" href="#aff2axcodes" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="nibabel.orientations.aff2axcodes">
+<code class="descclassname">nibabel.orientations.</code><code class="descname">aff2axcodes</code><span class="sig-paren">(</span><em>aff</em>, <em>labels=None</em>, <em>tol=None</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.orientations.aff2axcodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>axis direction codes for affine <cite>aff</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>aff</strong> : (N,M) array-like</p>
+<blockquote>
+<div><p>affine transformation matrix</p>
+</div></blockquote>
+<p><strong>labels</strong> : optional, None or sequence of (2,) sequences</p>
+<blockquote>
+<div><p>Labels for negative and positive ends of output axes of <cite>aff</cite>.  See
+docstring for <code class="docutils literal"><span class="pre">ornt2axcodes</span></code> for more detail</p>
+</div></blockquote>
+<p><strong>tol</strong> : None or float</p>
+<blockquote>
+<div><p>Tolerance for SVD of affine - see <code class="docutils literal"><span class="pre">io_orientation</span></code> for more detail.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>axcodes</strong> : (N,) tuple</p>
+<blockquote class="last">
+<div><p>labels for positive end of voxel axes.  Dropped axes get a label of
+None.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aff</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">],[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">20</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">30</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aff2axcodes</span><span class="p">(</span><span class="n">aff</span><span class="p">,</span> <span class="p">((</span><span class="s1">&#39;L&#39;</span><span class="p">,</span><span class="s1">&#39;R&#39;</span><span class="p">),(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span><span class="s1">&#39;F&#39;</span><span class="p">),(</span><span class="s1">&#39;D&#39;</span><span class="p">,</span><span class="s1">&#39;U&#39;</span><span class="p">)))</span>
+<span class="go">(&#39;B&#39;, &#39;R&#39;, &#39;U&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="apply-orientation">
+<h2>apply_orientation<a class="headerlink" href="#apply-orientation" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="nibabel.orientations.apply_orientation">
+<code class="descclassname">nibabel.orientations.</code><code class="descname">apply_orientation</code><span class="sig-paren">(</span><em>arr</em>, <em>ornt</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.orientations.apply_orientation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply transformations implied by <cite>ornt</cite> to the first
+n axes of the array <cite>arr</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>arr</strong> : array-like of data with ndim &gt;= n</p>
+<p><strong>ornt</strong> : (n,2) orientation array</p>
+<blockquote>
+<div><p>orientation transform. <code class="docutils literal"><span class="pre">ornt[N,1]`</span> <span class="pre">is</span> <span class="pre">flip</span> <span class="pre">of</span> <span class="pre">axis</span> <span class="pre">N</span> <span class="pre">of</span> <span class="pre">the</span>
+<span class="pre">array</span> <span class="pre">implied</span> <span class="pre">by</span> <span class="pre">`shape`,</span> <span class="pre">where</span> <span class="pre">1</span> <span class="pre">means</span> <span class="pre">no</span> <span class="pre">flip</span> <span class="pre">and</span> <span class="pre">-1</span> <span class="pre">means</span>
+<span class="pre">flip.</span>&nbsp; <span class="pre">For</span> <span class="pre">example,</span> <span class="pre">if</span> <span class="pre">``N==0</span></code> and <code class="docutils literal"><span class="pre">ornt[0,1]</span> <span class="pre">==</span> <span class="pre">-1</span></code>, and
+there&#8217;s an array <code class="docutils literal"><span class="pre">arr</span></code> of shape <cite>shape</cite>, the flip would
+correspond to the effect of <code class="docutils literal"><span class="pre">np.flipud(arr)</span></code>.  <code class="docutils literal"><span class="pre">ornt[:,0]</span></code> is
+the transpose that needs to be done to the implied array, as in
+<code class="docutils literal"><span class="pre">arr.transpose(ornt[:,0])</span></code></p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>t_arr</strong> : ndarray</p>
+<blockquote class="last">
+<div><p>data array <cite>arr</cite> transformed according to ornt</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="axcodes2ornt">
+<h2>axcodes2ornt<a class="headerlink" href="#axcodes2ornt" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="nibabel.orientations.axcodes2ornt">
+<code class="descclassname">nibabel.orientations.</code><code class="descname">axcodes2ornt</code><span class="sig-paren">(</span><em>axcodes</em>, <em>labels=None</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.orientations.axcodes2ornt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert axis codes <cite>axcodes</cite> to an orientation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>axcodes</strong> : (N,) tuple</p>
+<blockquote>
+<div><p>axis codes - see ornt2axcodes docstring</p>
+</div></blockquote>
+<p><strong>labels</strong> : optional, None or sequence of (2,) sequences</p>
+<blockquote>
+<div><p>(2,) sequences are labels for (beginning, end) of output axis.  That 
+is, if the first element in <cite>axcodes</cite> is <code class="docutils literal"><span class="pre">front</span></code>, and the second 
+(2,) sequence in <cite>labels</cite> is (&#8216;back&#8217;, &#8216;front&#8217;) then the first 
+row of <cite>ornt</cite> will be <code class="docutils literal"><span class="pre">[1,</span> <span class="pre">1]</span></code>. If None, equivalent to 
+<code class="docutils literal"><span class="pre">(('L','R'),('P','A'),('I','S'))</span></code> - that is - RAS axes.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>ornt</strong> : (N,2) array-like</p>
+<blockquote class="last">
+<div><p>orientation array - see io_orientation docstring</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">axcodes2ornt</span><span class="p">((</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">,</span> <span class="s1">&#39;U&#39;</span><span class="p">),</span> <span class="p">((</span><span class="s1">&#39;L&#39;</span><span class="p">,</span><span class="s1">&#39;R&#39;</span><span class="p">),(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span><span class="s1">&#39;F&#39;</span><span class="p">),(</span><span class="s1">&#39;D&#39;</span><span class="p">,</span><span class="s1">&#39;U&#39;</span><span class="p">)))</span>
+<span class="go">array([[ 1.,  1.],</span>
+<span class="go">       [ 0., -1.],</span>
+<span class="go">       [ 2.,  1.]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="flip-axis">
+<h2>flip_axis<a class="headerlink" href="#flip-axis" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="nibabel.orientations.flip_axis">
+<code class="descclassname">nibabel.orientations.</code><code class="descname">flip_axis</code><span class="sig-paren">(</span><em>arr</em>, <em>axis=0</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.orientations.flip_axis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flip contents of <cite>axis</cite> in array <cite>arr</cite></p>
+<p><code class="docutils literal"><span class="pre">flip_axis</span></code> is the same transform as <code class="docutils literal"><span class="pre">np.flipud</span></code>, but for any
+axis.  For example <code class="docutils literal"><span class="pre">flip_axis(arr,</span> <span class="pre">axis=0)</span></code> is the same transform
+as <code class="docutils literal"><span class="pre">np.flipud(arr)</span></code>, and <code class="docutils literal"><span class="pre">flip_axis(arr,</span> <span class="pre">axis=1)</span></code> is the same
+transform as <code class="docutils literal"><span class="pre">np.fliplr(arr)</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>arr</strong> : array-like</p>
+<p><strong>axis</strong> : int, optional</p>
+<blockquote>
+<div><p>axis to flip.  Default <cite>axis</cite> == 0</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>farr</strong> : array</p>
+<blockquote class="last">
+<div><p>Array with axis <cite>axis</cite> flipped</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
+<span class="go">array([[0, 1, 2],</span>
+<span class="go">       [3, 4, 5]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">flip_axis</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">array([[3, 4, 5],</span>
+<span class="go">       [0, 1, 2]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">flip_axis</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">array([[2, 1, 0],</span>
+<span class="go">       [5, 4, 3]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="inv-ornt-aff">
+<h2>inv_ornt_aff<a class="headerlink" href="#inv-ornt-aff" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="nibabel.orientations.inv_ornt_aff">
+<code class="descclassname">nibabel.orientations.</code><code class="descname">inv_ornt_aff</code><span class="sig-paren">(</span><em>ornt</em>, <em>shape</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.orientations.inv_ornt_aff" title="Permalink to this definition">¶</a></dt>
+<dd><p>Affine transform reversing transforms implied in <cite>ornt</cite></p>
+<p>Imagine you have an array <code class="docutils literal"><span class="pre">arr</span></code> of shape <cite>shape</cite>, and you apply the
+transforms implied by <cite>ornt</cite> (more below), to get <code class="docutils literal"><span class="pre">tarr</span></code>.
+<code class="docutils literal"><span class="pre">tarr</span></code> may have a different shape <code class="docutils literal"><span class="pre">shape_prime</span></code>.  This routine
+returns the affine that will take a array coordinate for <code class="docutils literal"><span class="pre">tarr</span></code>
+and give you the corresponding array coordinate in <code class="docutils literal"><span class="pre">arr</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>ornt</strong> : (p, 2) ndarray</p>
+<blockquote>
+<div><p>orientation transform. <code class="docutils literal"><span class="pre">ornt[P,</span> <span class="pre">1]`</span> <span class="pre">is</span> <span class="pre">flip</span> <span class="pre">of</span> <span class="pre">axis</span> <span class="pre">N</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">array</span>
+<span class="pre">implied</span> <span class="pre">by</span> <span class="pre">`shape`,</span> <span class="pre">where</span> <span class="pre">1</span> <span class="pre">means</span> <span class="pre">no</span> <span class="pre">flip</span> <span class="pre">and</span> <span class="pre">-1</span> <span class="pre">means</span> <span class="pre">flip.</span>&nbsp; <span class="pre">For</span>
+<span class="pre">example,</span> <span class="pre">if</span> <span class="pre">``P==0</span></code> and <code class="docutils literal"><span class="pre">ornt[0,</span> <span class="pre">1]</span> <span class="pre">==</span> <span class="pre">-1</span></code>, and there&#8217;s an array
+<code class="docutils literal"><span class="pre">arr</span></code> of shape <cite>shape</cite>, the flip would correspond to the effect of
+<code class="docutils literal"><span class="pre">np.flipud(arr)</span></code>.  <code class="docutils literal"><span class="pre">ornt[:,0]</span></code> gives us the (reverse of the)
+transpose that has been done to <code class="docutils literal"><span class="pre">arr</span></code>.  If there are any NaNs in
+<cite>ornt</cite>, we raise an <code class="docutils literal"><span class="pre">OrientationError</span></code> (see notes)</p>
+</div></blockquote>
+<p><strong>shape</strong> : length p sequence</p>
+<blockquote>
+<div><p>shape of array you may transform with <cite>ornt</cite></p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>transform_affine</strong> : (p + 1, p + 1) ndarray</p>
+<blockquote class="last">
+<div><p>An array <code class="docutils literal"><span class="pre">arr</span></code> (shape <cite>shape</cite>) might be transformed according to
+<cite>ornt</cite>, resulting in a transformed array <code class="docutils literal"><span class="pre">tarr</span></code>.  <cite>transformed_affine</cite>
+is the transform that takes you from array coordinates in <code class="docutils literal"><span class="pre">tarr</span></code> to
+array coordinates in <code class="docutils literal"><span class="pre">arr</span></code>.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>If a row in <cite>ornt</cite> contains NaN, this means that the input row does not
+influence the output space, and is thus effectively dropped from the output
+space.  In that case one <code class="docutils literal"><span class="pre">tarr</span></code> coordinate maps to many <code class="docutils literal"><span class="pre">arr</span></code>
+coordinates, we can&#8217;t invert the transform, and we raise an error</p>
+</dd></dl>
+
+</div>
+<div class="section" id="io-orientation">
+<h2>io_orientation<a class="headerlink" href="#io-orientation" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="nibabel.orientations.io_orientation">
+<code class="descclassname">nibabel.orientations.</code><code class="descname">io_orientation</code><span class="sig-paren">(</span><em>affine</em>, <em>tol=None</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.orientations.io_orientation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Orientation of input axes in terms of output axes for <cite>affine</cite></p>
+<p>Valid for an affine transformation from <code class="docutils literal"><span class="pre">p</span></code> dimensions to <code class="docutils literal"><span class="pre">q</span></code>
+dimensions (<code class="docutils literal"><span class="pre">affine.shape</span> <span class="pre">==</span> <span class="pre">(q</span> <span class="pre">+</span> <span class="pre">1,</span> <span class="pre">p</span> <span class="pre">+</span> <span class="pre">1)</span></code>).</p>
+<p>The calculated orientations can be used to transform associated
+arrays to best match the output orientations. If <code class="docutils literal"><span class="pre">p</span></code> &gt; <code class="docutils literal"><span class="pre">q</span></code>, then
+some of the output axes should be considered dropped in this
+orientation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>affine</strong> : (q+1, p+1) ndarray-like</p>
+<blockquote>
+<div><p>Transformation affine from <code class="docutils literal"><span class="pre">p</span></code> inputs to <code class="docutils literal"><span class="pre">q</span></code> outputs.  Usually this
+will be a shape (4,4) matrix, transforming 3 inputs to 3 outputs, but the
+code also handles the more general case</p>
+</div></blockquote>
+<p><strong>tol</strong> : {None, float}, optional</p>
+<blockquote>
+<div><p>threshold below which SVD values of the affine are considered zero. If
+<cite>tol</cite> is None, and <code class="docutils literal"><span class="pre">S</span></code> is an array with singular values for <cite>affine</cite>,
+and <code class="docutils literal"><span class="pre">eps</span></code> is the epsilon value for datatype of <code class="docutils literal"><span class="pre">S</span></code>, then <cite>tol</cite> set to
+<code class="docutils literal"><span class="pre">S.max()</span> <span class="pre">*</span> <span class="pre">max((q,</span> <span class="pre">p))</span> <span class="pre">*</span> <span class="pre">eps</span></code></p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>orientations</strong> : (p, 2) ndarray</p>
+<blockquote class="last">
+<div><p>one row per input axis, where the first value in each row is the closest
+corresponding output axis. The second value in each row is 1 if the input
+axis is in the same direction as the corresponding output axis and -1 if
+it is in the opposite direction.  If a row is [np.nan, np.nan], which can
+happen when p &gt; q, then this row should be considered dropped.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="ornt2axcodes">
+<h2>ornt2axcodes<a class="headerlink" href="#ornt2axcodes" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="nibabel.orientations.ornt2axcodes">
+<code class="descclassname">nibabel.orientations.</code><code class="descname">ornt2axcodes</code><span class="sig-paren">(</span><em>ornt</em>, <em>labels=None</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.orientations.ornt2axcodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert orientation <cite>ornt</cite> to labels for axis directions</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>ornt</strong> : (N,2) array-like</p>
+<blockquote>
+<div><p>orientation array - see io_orientation docstring</p>
+</div></blockquote>
+<p><strong>labels</strong> : optional, None or sequence of (2,) sequences</p>
+<blockquote>
+<div><p>(2,) sequences are labels for (beginning, end) of output axis.  That is,
+if the first row in <cite>ornt</cite> is <code class="docutils literal"><span class="pre">[1,</span> <span class="pre">1]</span></code>, and the second (2,) sequence
+in <cite>labels</cite> is (&#8216;back&#8217;, &#8216;front&#8217;) then the first returned axis code will
+be <code class="docutils literal"><span class="pre">'front'</span></code>.  If the first row in <cite>ornt</cite> had been <code class="docutils literal"><span class="pre">[1,</span> <span class="pre">-1]</span></code> then
+the first returned value would have been <code class="docutils literal"><span class="pre">'back'</span></code>.  If None,
+equivalent to <code class="docutils literal"><span class="pre">(('L','R'),('P','A'),('I','S'))</span></code> - that is - RAS axes.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>axcodes</strong> : (N,) tuple</p>
+<blockquote class="last">
+<div><p>labels for positive end of voxel axes.  Dropped axes get a label of
+None.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ornt2axcodes</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]],</span> <span class="p">((</span><span class="s1">&#39;L&#39;</span><span class="p">,</span><span class="s1">&#39;R&#39;</span><span class="p">),(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span><span class="s1">&#39;F&#39;</span><span class="p">),(</span><span class="s1">&#39;D&#39;</span><span class="p">,</span><span class="s1">&#39;U&#39;</span><span class="p">)))</span>
+<span class="go">(&#39;F&#39;, &#39;L&#39;, &#39;U&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="ornt-transform">
+<h2>ornt_transform<a class="headerlink" href="#ornt-transform" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="nibabel.orientations.ornt_transform">
+<code class="descclassname">nibabel.orientations.</code><code class="descname">ornt_transform</code><span class="sig-paren">(</span><em>start_ornt</em>, <em>end_ornt</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.orientations.ornt_transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the orientation that transforms from <cite>start_ornt</cite> to <cite>end_ornt</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>start_ornt</strong> : (n,2) orientation array</p>
+<blockquote>
+<div><p>Initial orientation.</p>
+</div></blockquote>
+<p><strong>end_ornt</strong> : (n,2) orientation array</p>
+<blockquote>
+<div><p>Final orientation.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>orientations</strong> : (p, 2) ndarray</p>
+<blockquote class="last">
+<div><p>The orientation that will transform the <cite>start_ornt</cite> to the <cite>end_ornt</cite>.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2006-2015, Matthew Brett, Michael Hanke and Eric Larson &lt;nipy-devel@neuroimaging.scipy.org&gt;.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+  </body>
+</html>

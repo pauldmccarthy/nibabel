@@ -1,0 +1,1035 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Neuroimaging in Python &mdash; NiBabel 2.0.2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/nibabel.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="NiBabel 2.0.2 documentation" href="../index.html" />
+    <link rel="up" title="General tutorials" href="../tutorials.html" />
+    <link rel="next" title="Developer documentation page" href="../devel/index.html" />
+    <link rel="prev" title="Radiological vs neurological conventions" href="../neuro_radio_conventions.html" />
+  <meta name="keywords" content="nipy, neuroimaging, python, neuroscience">
+
+  </head>
+  <body role="document">
+<div style="background-color: white; text-align: left; padding-left: 150px; padding-bottom:50px; padding-top:20px; background-image: url(../_static/nipy-logo-bg-138x120.png); background-repeat: no-repeat;">
+<h1>NiBabel</h1>
+<h3 style="margin-top:-5px;color:#2f83c8">Access a cacophony of neuro-imaging file formats</h3>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../devel/index.html" title="Developer documentation page"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../neuro_radio_conventions.html" title="Radiological vs neurological conventions"
+             accesskey="P">previous</a> |</li>
+  <li><a href="http://nipy.org/">Community</a> |&nbsp;</li>
+  <li><a href="../index.html">NiBabel Home</a> |&nbsp;</li>
+  <li><a href="https://mail.python.org/mailman/listinfo/neuroimaging">Mailing list</a> |&nbsp;</li>
+  <li><a href="legal.html">License</a> |&nbsp;</li>
+
+          <li class="nav-item nav-item-1"><a href="../tutorials.html" accesskey="U">General tutorials</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Introduction to DICOM</a><ul>
+<li><a class="reference internal" href="#dicom-is-messages">DICOM is messages</a></li>
+<li><a class="reference internal" href="#the-dicom-standard">The DICOM standard</a></li>
+<li><a class="reference internal" href="#dicom-data-format">DICOM data format</a><ul>
+<li><a class="reference internal" href="#dicom-elements">DICOM elements</a><ul>
+<li><a class="reference internal" href="#attribute-tag">Attribute Tag</a><ul>
+<li><a class="reference internal" href="#standard-attribute-tags">Standard attribute tags</a></li>
+<li><a class="reference internal" href="#private-attribute-tags">Private attribute tags</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#value-representation">Value Representation</a></li>
+<li><a class="reference internal" href="#value-length">Value length</a></li>
+<li><a class="reference internal" href="#value-field">Value field</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#data-element-tags-and-data-dictionaries">Data element tags and data dictionaries</a><ul>
+<li><a class="reference internal" href="#value-representation-in-the-data-dictionary">Value Representation in the data dictionary</a></li>
+<li><a class="reference internal" href="#value-multiplicity-in-the-data-dictionary">Value Multiplicity in the data dictionary</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dicom-data-structures">DICOM data structures</a><ul>
+<li><a class="reference internal" href="#a-data-set">A data set</a></li>
+<li><a class="reference internal" href="#background-the-dicom-world">Background - the DICOM world</a></li>
+<li><a class="reference internal" href="#dicom-entities-and-information-object-definitions">DICOM Entities and Information Object Definitions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dicom-services-dimse">DICOM services (DIMSE)</a></li>
+<li><a class="reference internal" href="#dicom-service-object-pairs-sops">DICOM service object pairs (SOPs)</a></li>
+<li><a class="reference internal" href="#dicom-files">DICOM files</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../neuro_radio_conventions.html"
+                        title="previous chapter">Radiological vs neurological conventions</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../devel/index.html"
+                        title="next chapter">Developer documentation page</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/dicom/dicom_intro.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<p><img src="../_static/reggie.png" alt="Reggie -- the one" /></p>
+
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="introduction-to-dicom">
+<span id="dicom-intro"></span><h1>Introduction to DICOM<a class="headerlink" href="#introduction-to-dicom" title="Permalink to this headline">¶</a></h1>
+<p>DICOM defines standards for storing data in memory and on disk, and for
+communicating this data between machines over a network.</p>
+<p>We are interested here in DICOM data.  Specifically we are interested in DICOM
+files.</p>
+<p>DICOM files are binary dumps of the objects in memory that DICOM sends across
+the network.</p>
+<p>We need to understand the format that DICOM uses to send messages across the
+network to understand the terms the DICOM uses when storing data in files.</p>
+<p>For example, I hope, by the time you reach the end of this document, you will
+understand the following complicated and confusing statement from section 7 of
+the DICOM standards document <a class="reference external" href="http://medical.nema.org/Dicom/2011/11_10pu.pdf">PS 3.10</a>:</p>
+<blockquote>
+<div><p>7   DICOM File Format</p>
+<p>The DICOM File Format provides a means to encapsulate in a file the Data Set
+representing a SOP Instance related to a DICOM IOD. As shown in Figure 7-1,
+the byte stream of the Data Set is placed into the file after the DICOM File
+Meta Information. Each file contains a single SOP Instance.</p>
+</div></blockquote>
+<div class="section" id="dicom-is-messages">
+<h2>DICOM is messages<a class="headerlink" href="#dicom-is-messages" title="Permalink to this headline">¶</a></h2>
+<p>The fundamental task of DICOM is to allow different computers to send messages
+to one another.  These messages can contain data, and the data is very often
+medical images.</p>
+<p>The messages are in the form of requests for an operation, or responses to those requests.</p>
+<p>Let&#8217;s call the requests and the responses - services.</p>
+<p>Every DICOM message starts with a stream of bytes containing information about
+the service.  This part of the message is called the DICOM Message Service
+Element or DIMSE.  Depending on what the DIMSE was, there may follow some data
+related to the request.</p>
+<p>For example, there is a DICOM service called &#8220;C-ECHO&#8221;.  This asks for a response
+from another computer to confirm it has seen the echo request.  There is no
+associated data following the &#8220;C-ECHO&#8221; DIMSE part.  So, the full message is the
+DIMSE &#8220;C-ECHO&#8221;.</p>
+<p>There is another DICOM service called &#8220;C-STORE&#8221;.  This is a request for the
+other computer to store some data, such as an image.  The data to be stored
+follows the &#8220;C-STORE&#8221; DIMSE part.</p>
+<p>We go into more detail on this later in the page.</p>
+<p>Both the DIMSE and the subsequent data have a particular binary format -
+consisting of DICOM elements (see below).</p>
+<p>Here we will cover:</p>
+<ul class="simple">
+<li>what DICOM elements are;</li>
+<li>how DICOM elements are arranged to form complicated data structures such as images;</li>
+<li>how the service part and the data part go together to form whole messages</li>
+<li>how these parts relate to DICOM files.</li>
+</ul>
+</div>
+<div class="section" id="the-dicom-standard">
+<h2>The DICOM standard<a class="headerlink" href="#the-dicom-standard" title="Permalink to this headline">¶</a></h2>
+<p>The documents defining the standard are:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="16%" />
+<col width="84%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Number</th>
+<th class="head">Name</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference external" href="http://medical.nema.org/Dicom/2011/11_01pu.pdf">PS 3.1</a></td>
+<td>Introduction and Overview</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="http://medical.nema.org/Dicom/2011/11_02pu.pdf">PS 3.2</a></td>
+<td>Conformance</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="http://medical.nema.org/Dicom/2011/11_03pu.pdf">PS 3.3</a></td>
+<td>Information Object Definitions</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="http://medical.nema.org/Dicom/2011/11_04pu.pdf">PS 3.4</a></td>
+<td>Service Class Specifications</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="http://medical.nema.org/Dicom/2011/11_05pu.pdf">PS 3.5</a></td>
+<td>Data Structure and Encoding</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="http://medical.nema.org/Dicom/2011/11_06pu.pdf">PS 3.6</a></td>
+<td>Data Dictionary</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="http://medical.nema.org/Dicom/2011/11_07pu.pdf">PS 3.7</a></td>
+<td>Message Exchange</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="http://medical.nema.org/Dicom/2011/11_08pu.pdf">PS 3.8</a></td>
+<td>Network Communication Support for Message Exchange</td>
+</tr>
+<tr class="row-even"><td>PS 3.9</td>
+<td>Retired</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="http://medical.nema.org/Dicom/2011/11_10pu.pdf">PS 3.10</a></td>
+<td>Media Storage / File Format for Media Interchange</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="http://medical.nema.org/Dicom/2011/11_11pu.pdf">PS 3.11</a></td>
+<td>Media Storage Application Profiles</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="http://medical.nema.org/Dicom/2011/11_12pu.pdf">PS 3.12</a></td>
+<td>Media Formats / Physical Media for Media Interchange</td>
+</tr>
+<tr class="row-even"><td>PS 3.13</td>
+<td>Retired</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="http://medical.nema.org/Dicom/2011/11_14pu.pdf">PS 3.14</a></td>
+<td>Grayscale Standard Display Function</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="http://medical.nema.org/Dicom/2011/11_15pu.pdf">PS 3.15</a></td>
+<td>Security and System Management Profiles</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="http://medical.nema.org/Dicom/2011/11_16pu.pdf">PS 3.16</a></td>
+<td>Content Mapping Resource</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="http://medical.nema.org/Dicom/2011/11_17pu.pdf">PS 3.17</a></td>
+<td>Explanatory Information</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="http://medical.nema.org/Dicom/2011/11_18pu.pdf">PS 3.18</a></td>
+<td>Web Access to DICOM Persistent Objects (WADO)</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="http://medical.nema.org/Dicom/2011/11_19pu.pdf">PS 3.19</a></td>
+<td>Application Hosting</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="http://medical.nema.org/Dicom/2011/11_20pu.pdf">PS 3.20</a></td>
+<td>Transformation of DICOM to and from HL7 Standards</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="dicom-data-format">
+<h2>DICOM data format<a class="headerlink" href="#dicom-data-format" title="Permalink to this headline">¶</a></h2>
+<p>DICOM data is stored in memory and on disk as a sequence of <em>DICOM elements</em>
+(section 7 of <a class="reference external" href="http://medical.nema.org/Dicom/2011/11_05pu.pdf">PS 3.5</a>).</p>
+<div class="section" id="dicom-elements">
+<h3>DICOM elements<a class="headerlink" href="#dicom-elements" title="Permalink to this headline">¶</a></h3>
+<p>A DICOM element is made up of three or four fields.  These are (Attribute Tag,
+[Value Representation, ], Value Length, Value Field), where <em>Value
+Representation</em> may be present or absent, depending on the type of &#8220;Value
+Representation Encoding&#8221; (see below)</p>
+<div class="section" id="attribute-tag">
+<h4>Attribute Tag<a class="headerlink" href="#attribute-tag" title="Permalink to this headline">¶</a></h4>
+<p>The attribute tag is a pair of 16-bit unsigned integers of form (Group number,
+Element number).  The tag uniquely identifies the element.</p>
+<p>The <em>Element number</em> is badly named, because the element number does not give a
+unique number for the element, but only for the element within the group (given
+by the <em>Group number</em>).</p>
+<p>The (Group number, Element number) are nearly always written as hexadecimal
+numbers in the following format: <code class="docutils literal"><span class="pre">(0010,</span> <span class="pre">0010)</span></code>.  The decimal representation
+of hexadecimal 0010 is 16, so this tag refers to group number 16, element number
+16.  If you look this tag up in the DICOM data dictionary (<a class="reference external" href="http://medical.nema.org/Dicom/2011/11_06pu.pdf">PS 3.6</a>) you&#8217;ll see
+this must be the element called &#8220;PatientName&#8221;.</p>
+<p>These tag groups have special meanings:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="26%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Tag group</th>
+<th class="head">Meaning</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0000</td>
+<td>Command elements</td>
+</tr>
+<tr class="row-odd"><td>0002</td>
+<td>File meta elements</td>
+</tr>
+<tr class="row-even"><td>0004</td>
+<td>Directory structuring elements</td>
+</tr>
+<tr class="row-odd"><td>0006</td>
+<td>(not used)</td>
+</tr>
+</tbody>
+</table>
+<p>See Annex E (command dictionary) of <a class="reference external" href="http://medical.nema.org/Dicom/2011/11_07pu.pdf">PS 3.7</a> for details on group 0000.  See
+sections 7 and 8 of <a class="reference external" href="http://medical.nema.org/Dicom/2011/11_06pu.pdf">PS 3.6</a> for details of groups 2 and 4 respectively.</p>
+<p>Tags in groups 0000, 0002, 0004 are therefore not <em>data</em> elements, but Command
+elements; File meta elements; directory structuring elements.</p>
+<p>Tags with groups from 0008 are <em>data</em> element tags.</p>
+<div class="section" id="standard-attribute-tags">
+<h5>Standard attribute tags<a class="headerlink" href="#standard-attribute-tags" title="Permalink to this headline">¶</a></h5>
+<p><em>Standard</em> tags are tags with an even group number (see below).  There is a full
+list of all <em>standard</em> data element tags in the DICOM data dictionary in section
+6 of DICOM standard <a class="reference external" href="http://medical.nema.org/Dicom/2011/11_06pu.pdf">PS 3.6</a>.</p>
+<p>Even numbered groups are defined in the DICOM standard data dictionary.  Odd
+numbered groups are &#8220;private&#8221;, are <em>not</em> defined in the standard data dictionary
+and can be used by manufacturers as they wish (see below).</p>
+<p>Quoting from section 7.1 of <a class="reference external" href="http://medical.nema.org/Dicom/2011/11_05pu.pdf">PS 3.5</a>:</p>
+<blockquote>
+<div><p>Two types of Data Elements are defined:</p>
+<p class="attribution">&mdash;Standard Data Elements have an even Group Number that is not (0000,eeee),
+(0002,eeee), (0004,eeee), or (0006,eeee).</p>
+</div></blockquote>
+<blockquote>
+<div><p>Note: Usage of these groups is reserved for DIMSE Commands (see PS 3.7) and
+DICOM File Formats.</p>
+<p class="attribution">&mdash;Private Data Elements have an odd Group Number that is not (0001,eeee),
+(0003,eeee), (0005,eeee), (0007,eeee), or (FFFF,eeee). Private Data Elements
+are discussed further in Section 7.8.</p>
+</div></blockquote>
+</div>
+<div class="section" id="private-attribute-tags">
+<h5>Private attribute tags<a class="headerlink" href="#private-attribute-tags" title="Permalink to this headline">¶</a></h5>
+<p>Private attribute tags are tags with an odd group number. A private element is
+an element with a private tag.</p>
+<p>Private elements still use the (Tag, [Value Representation, ] Value Length,
+Value Field) DICOM data format.</p>
+<p>The same odd group may be used by different manufacturers in different ways.</p>
+<p>To try and avoid collisions of private tags from different manufacturers, there
+is a mechanism by which a manufacturer can tell other users of a DICOM dataset
+that it has reserved a block in the (Group number, Element number) space for
+their own use.  To do this they write a &#8220;Private Creator&#8221; element where the tag
+is of the form <code class="docutils literal"><span class="pre">(gggg,</span> <span class="pre">00xx)</span></code>, the Value Representation (see below) is &#8220;LO&#8221;
+(Long String) and the Value Field is a string identifying what the space is
+reserved for.  Here <code class="docutils literal"><span class="pre">gggg</span></code> is the odd group we are reserving a portion of and
+the <code class="docutils literal"><span class="pre">xx</span></code> is the block of elements we are reserving.  A tag of <code class="docutils literal"><span class="pre">(gggg,</span> <span class="pre">00xx)</span></code>
+reserves the 256 elements in the range <code class="docutils literal"><span class="pre">(gggg,</span> <span class="pre">xx00)</span></code> to <code class="docutils literal"><span class="pre">(gggg,</span> <span class="pre">xxFF)</span></code>.</p>
+<p>For example, here is a real data element from a Siemens DICOM dataset:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>(0019, 0010) Private Creator                     LO: &#39;SIEMENS MR HEADER&#39;
+</pre></div>
+</div>
+<p>This reserves the tags from <code class="docutils literal"><span class="pre">(0019,</span> <span class="pre">1000)</span></code> to <code class="docutils literal"><span class="pre">(0019,</span> <span class="pre">10FF)</span></code> for information
+on the &#8220;SIEMENS MR HEADER&#8221;</p>
+<p>The odd group <code class="docutils literal"><span class="pre">gggg</span></code> must be greater than <code class="docutils literal"><span class="pre">0008</span></code> and the block reservation
+<code class="docutils literal"><span class="pre">xx</span></code> must be greater than or equal to <code class="docutils literal"><span class="pre">0010</span></code> and less than <code class="docutils literal"><span class="pre">0100</span></code>.</p>
+<p>Here is the start of the relevant section from PS 3.5:</p>
+<blockquote>
+<div><p>7.8.1 PRIVATE DATA ELEMENT TAGS</p>
+<p>It is possible that multiple implementors may define Private Elements with the
+same (odd) group number.  To avoid conflicts, Private Elements shall be
+assigned Private Data Element Tags according to the following rules.</p>
+<p>a) Private Creator Data Elements numbered (gggg,0010-00FF) (gggg is odd) shall
+be used to reserve a block of Elements with Group Number gggg for use by an
+individual implementor.  The implementor shall insert an identification code
+in the first unused (unassigned) Element in this series to reserve a block of
+Private Elements. The VR of the private identification code shall be LO (Long
+String) and the VM shall be equal to 1.</p>
+<p>b) Private Creator Data Element (gggg,0010), is a Type 1 Data Element that
+identifies the implementor reserving element (gggg,1000-10FF), Private Creator
+Data Element (gggg,0011) identifies the implementor reserving elements
+(gggg,1100-11FF), and so on, until Private Creator Data Element (gggg,00FF)
+identifies the implementor reserving elements (gggg,FF00- FFFF).</p>
+<p>c) Encoders of Private Data Elements shall be able to dynamically assign
+private data to any available (unreserved) block(s) within the Private group,
+and specify this assignment through the blocks corresponding Private Creator
+Data Element(s). Decoders of Private Data shall be able to accept reserved
+blocks with a given Private Creator identification code at any position within
+the Private group specified by the blocks corresponding Private Creator Data
+Element.</p>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="value-representation">
+<h4>Value Representation<a class="headerlink" href="#value-representation" title="Permalink to this headline">¶</a></h4>
+<p>Value Representation is often abbreviated to VR.</p>
+<p>The VR is a two byte character string giving the code for the encoding of the
+subsequent data in the Value Field (see below).</p>
+<p>The VR appears in DICOM data that has &#8220;Explicit Value Representation&#8221;, and is
+absent for data with &#8220;Implicit Value Representation&#8221;.  &#8220;Implicit Value
+Representation&#8221; uses the fact that the DICOM data dictionary gives VR values for
+each tag in the standard DICOM data dictionary, so the VR value is implied by
+the tag value, given the data dictionary.</p>
+<p>Most DICOM data uses &#8220;Explicit Value Representation&#8221; because the DICOM data
+dictionary only gives VRs for standard (even group number, not private) data
+elements.  Each manufacturer writes their own private data elements, and the VR
+of these elements is not defined in the standard, and therefore may not be known
+to software not from that manufacturer.</p>
+<p>The VR codes have to be one of the values from this table (section 6.2 of DICOM
+standard <a class="reference external" href="http://medical.nema.org/Dicom/2011/11_05pu.pdf">PS 3.5</a>):</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="40%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Value Representation</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>AE</td>
+<td>Application Entity</td>
+</tr>
+<tr class="row-odd"><td>AS</td>
+<td>Age String</td>
+</tr>
+<tr class="row-even"><td>AT</td>
+<td>Attribute Tag</td>
+</tr>
+<tr class="row-odd"><td>CS</td>
+<td>Code String</td>
+</tr>
+<tr class="row-even"><td>DA</td>
+<td>Date</td>
+</tr>
+<tr class="row-odd"><td>DS</td>
+<td>Decimal String</td>
+</tr>
+<tr class="row-even"><td>DT</td>
+<td>Date/Time</td>
+</tr>
+<tr class="row-odd"><td>FL</td>
+<td>Floating Point Single (4 bytes)</td>
+</tr>
+<tr class="row-even"><td>FD</td>
+<td>Floating Point Double (8 bytes)</td>
+</tr>
+<tr class="row-odd"><td>IS</td>
+<td>Integer String</td>
+</tr>
+<tr class="row-even"><td>LO</td>
+<td>Long String</td>
+</tr>
+<tr class="row-odd"><td>LT</td>
+<td>Long Text</td>
+</tr>
+<tr class="row-even"><td>OB</td>
+<td>Other Byte</td>
+</tr>
+<tr class="row-odd"><td>OF</td>
+<td>Other Float</td>
+</tr>
+<tr class="row-even"><td>OW</td>
+<td>Other Word</td>
+</tr>
+<tr class="row-odd"><td>PN</td>
+<td>Person Name</td>
+</tr>
+<tr class="row-even"><td>SH</td>
+<td>Short String</td>
+</tr>
+<tr class="row-odd"><td>SL</td>
+<td>Signed Long</td>
+</tr>
+<tr class="row-even"><td>SQ</td>
+<td>Sequence of Items</td>
+</tr>
+<tr class="row-odd"><td>SS</td>
+<td>Signed Short</td>
+</tr>
+<tr class="row-even"><td>ST</td>
+<td>Short Text</td>
+</tr>
+<tr class="row-odd"><td>TM</td>
+<td>Time</td>
+</tr>
+<tr class="row-even"><td>UI</td>
+<td>Unique Identifier</td>
+</tr>
+<tr class="row-odd"><td>UL</td>
+<td>Unsigned Long</td>
+</tr>
+<tr class="row-even"><td>UN</td>
+<td>Unknown</td>
+</tr>
+<tr class="row-odd"><td>US</td>
+<td>Unsigned Short</td>
+</tr>
+<tr class="row-even"><td>UT</td>
+<td>Unlimited Text</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="value-length">
+<h4>Value length<a class="headerlink" href="#value-length" title="Permalink to this headline">¶</a></h4>
+<p>Value length gives the length of the data contained in the Value Field tag, or
+is a flag specifying the Value Field is of undefined length, and thus must be
+terminated later in the data stream with a special Item or Sequence Delimitation
+tag.</p>
+<p>Quoting from section 7.1.1 of <a class="reference external" href="http://medical.nema.org/Dicom/2011/11_05pu.pdf">PS 3.5</a>:</p>
+<blockquote>
+<div><p>Value Length:  Either:</p>
+<p>a 16 or 32-bit (dependent on VR and whether VR is explicit or implicit)
+unsigned integer containing the Explicit Length of the Value Field as the
+number of bytes (even) that make up the Value. It does not include the
+length of the Data Element Tag, Value Representation, and Value Length
+Fields.</p>
+<p>a 32-bit Length Field set to Undefined Length (FFFFFFFFH). Undefined
+Lengths may be used for Data Elements having the Value Representation
+(VR) Sequence of Items (SQ) and Unknown (UN). For Data Elements with
+Value Representation OW or OB Undefined Length may be used depending
+on the negotiated Transfer Syntax (see Section 10 and Annex A).</p>
+</div></blockquote>
+</div>
+<div class="section" id="value-field">
+<h4>Value field<a class="headerlink" href="#value-field" title="Permalink to this headline">¶</a></h4>
+<p>An even number of bytes storing the value(s) of the data element.  The exact
+format of this data depends on the Value Representation (see above) and the
+Value Multiplicity (see next section).</p>
+</div>
+</div>
+<div class="section" id="data-element-tags-and-data-dictionaries">
+<h3>Data element tags and data dictionaries<a class="headerlink" href="#data-element-tags-and-data-dictionaries" title="Permalink to this headline">¶</a></h3>
+<p>We can look up data element tags in a <em>data dictionary</em>.</p>
+<p>As we&#8217;ve seen, data element tags with even group numbers are <em>standard</em> data
+element tags.  We can look these up in the standard data dictionary in section 6
+of <a class="reference external" href="http://medical.nema.org/Dicom/2011/11_06pu.pdf">PS 3.6</a>.</p>
+<p>Data element tags with odd group numbers are <em>private</em> data element tags. These
+can be used by manufacturers for information that may be specific to the
+manufacturer.  To look up these tags, we need the private data dictionary of the
+manufacturer.</p>
+<p>A data dictionary lists (Attribute tag, Attribute name, Attribute Keyword, Value
+Representation, Value Multiplicity) for all tags.</p>
+<p>For example, here is an excerpt from the table in PS 3.6 section 6:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="42%" />
+<col width="37%" />
+<col width="4%" />
+<col width="4%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Tag</th>
+<th class="head">Name</th>
+<th class="head">Keyword</th>
+<th class="head">VR</th>
+<th class="head">VM</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>(0010,0010)</td>
+<td>Patient&#8217;s Name</td>
+<td>PatientName</td>
+<td>PN</td>
+<td>1</td>
+</tr>
+<tr class="row-odd"><td>(0010,0020)</td>
+<td>Patient ID</td>
+<td>PatientID</td>
+<td>LO</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>(0010,0021)</td>
+<td>Issuer of Patient ID</td>
+<td>IssuerOfPatientID</td>
+<td>LO</td>
+<td>1</td>
+</tr>
+<tr class="row-odd"><td>(0010,0022)</td>
+<td>Type of Patient ID</td>
+<td>TypeOfPatientID</td>
+<td>CS</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>(0010,0024)</td>
+<td>Issuer of Patient ID Qualifiers Sequence</td>
+<td>IssuerOfPatientIDQualifiersSequence</td>
+<td>SQ</td>
+<td>1</td>
+</tr>
+<tr class="row-odd"><td>(0010,0030)</td>
+<td>Patient&#8217;s Birth Date</td>
+<td>PatientBirthDate</td>
+<td>DA</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>(0010,0032)</td>
+<td>Patient&#8217;s Birth Time</td>
+<td>PatientBirthTime</td>
+<td>TM</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>The &#8220;Name&#8221; column gives a standard name for the tag.  &#8220;Keyword&#8221; gives a shorter
+equivalent to the name without spaces that can be used as a variable or
+attribute name in code.</p>
+<div class="section" id="value-representation-in-the-data-dictionary">
+<h4>Value Representation in the data dictionary<a class="headerlink" href="#value-representation-in-the-data-dictionary" title="Permalink to this headline">¶</a></h4>
+<p>The &#8220;VR&#8221; column in the data dictionary gives the Value Representation.  There is
+usually only one possible VR for each tag <a class="footnote-reference" href="#can-be-two" id="id1">[1]</a>.</p>
+<p>If a particular stream of data elements is using &#8220;Implicit Value Representation
+Encoding&#8221; then the data elements consist of (tag, Value Length, Value Field) and
+the Value Representation is implicit.  In this case we have to get the Value
+Representation from the data dictionary.  If a stream is using &#8220;Explicit Value
+Representation Encoding&#8221;, the elements consist of (tag, Value Representation,
+Value Length, Value Field) and the Value Representation is therefore already
+specified along with the data.</p>
+</div>
+<div class="section" id="value-multiplicity-in-the-data-dictionary">
+<h4>Value Multiplicity in the data dictionary<a class="headerlink" href="#value-multiplicity-in-the-data-dictionary" title="Permalink to this headline">¶</a></h4>
+<p>The &#8220;VM&#8221; column in the dictionary gives the Value Multiplicity for this tag.
+Quoting from PS 3.5 section 6.4:</p>
+<blockquote>
+<div>The Value Multiplicity of a Data Element specifies the number of Values that
+can be encoded in the Value Field of that Data Element. The VM of each Data
+Element is specified explicitly in PS 3.6. If the number of Values that may
+be encoded in an element is variable, it shall be represented by two numbers
+separated by a dash; e.g., &#8220;1-10&#8221; means that there may be 1 to 10 Values in
+the element.</div></blockquote>
+<p>The most common values for Value Multiplicity in the standard data dictionary
+are (in decreasing frequency) &#8216;1&#8217;, &#8216;1-n&#8217;, &#8216;3&#8217;, &#8216;2&#8217;, &#8216;1-2&#8217;, &#8216;4&#8217; with other values
+being less common.</p>
+<p>The data dictionary is the only way to know the Value Multiplicity of a
+particular tag.  This means that we need the manufacturer&#8217;s private data
+dictionary to know the Value Multiplicity of private attribute tags.</p>
+</div>
+</div>
+<div class="section" id="dicom-data-structures">
+<h3>DICOM data structures<a class="headerlink" href="#dicom-data-structures" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="a-data-set">
+<h4>A data set<a class="headerlink" href="#a-data-set" title="Permalink to this headline">¶</a></h4>
+<p>A DICOM <em>data set</em> is a ordered list of data elements.  The order of the list is
+the order of the tags of the data elements.  Here is the definition from section
+3.10 of <a class="reference external" href="http://medical.nema.org/Dicom/2011/11_05pu.pdf">PS 3.5</a>:</p>
+<blockquote>
+<div>DATA SET: Exchanged information consisting of a structured set of Attribute
+values directly or indirectly related to Information Objects. The value of
+each Attribute in a Data Set is expressed as a Data Element.  A collection
+of Data Elements ordered by increasing Data Element Tag number that is an
+encoding of the values of Attributes of a real world object.</div></blockquote>
+</div>
+<div class="section" id="background-the-dicom-world">
+<h4>Background - the DICOM world<a class="headerlink" href="#background-the-dicom-world" title="Permalink to this headline">¶</a></h4>
+<p>DICOM has abstract definitions of a set of entities (objects) in the &#8220;Real
+World&#8221;.  These real world objects have relationships between them. Section 7 of
+<a class="reference external" href="http://medical.nema.org/Dicom/2011/11_03pu.pdf">PS 3.3</a> has the title &#8220;DICOM model of the real world&#8221;.  Examples of Real World
+entities are Patient, Study, Series.</p>
+<p>Here is a selected list of real world entities compiled from section 7 of PS
+3.3:</p>
+<ul class="simple">
+<li>Patient</li>
+<li>Visit</li>
+<li>Study</li>
+<li>Modality Performed Procedure Steps</li>
+<li>Frame of Reference</li>
+<li>Equipment</li>
+<li>Series</li>
+<li>Registration</li>
+<li>Fiducials</li>
+<li>Image</li>
+<li>Presentation State</li>
+<li>SR Document</li>
+<li>Waveform</li>
+<li>MR Spectroscopy</li>
+<li>Raw Data</li>
+<li>Encapsulated Document</li>
+<li>Real World Value Mapping</li>
+<li>Stereometric Relationship</li>
+<li>Surface</li>
+<li>Measurements</li>
+</ul>
+<p>DICOM refers to its model of the entities and their relationships in the real
+world as the DICOM Application Model.  PS 3.3:</p>
+<blockquote>
+<div>3.8.5 DICOM application model: an Entity-Relationship diagram used to model
+the relationships between Real-World Objects which are within the area of
+interest of the DICOM Standard.</div></blockquote>
+</div>
+<div class="section" id="dicom-entities-and-information-object-definitions">
+<h4>DICOM Entities and Information Object Definitions<a class="headerlink" href="#dicom-entities-and-information-object-definitions" title="Permalink to this headline">¶</a></h4>
+<p>This is rather confusing.</p>
+<p>PS 3.3 gives definitions of fundamental DICOM objects called <em>Information Object
+Definitions</em> (IODs).  Here is the definition of an IOD from section 3.8.7 of PS
+3.3:</p>
+<blockquote>
+<div>3.8.7 Information object definition (IOD): a data abstraction of a class of
+similar Real-World Objects which defines the nature and Attributes relevant
+to the class of Real-World Objects represented.</div></blockquote>
+<p>IODs give lists of attributes (data elements) that refer to one or more objects
+in the DICOM Real World.</p>
+<p>A single IOD is the usual atom of data sent in a single DICOM message.</p>
+<p>An IOD that contains attributes (data elements) for only one object in the DICOM
+Real World is a <em>Normalized IOD</em>. From PS 3.3:</p>
+<blockquote>
+<div>3.8.10 Normalized IOD: an Information Object Definition which represents a
+single entity in the DICOM Application Model. Such an IOD includes
+Attributes which are only inherent in the Real-World Object that the IOD
+represents.</div></blockquote>
+<p>Annex B of PS 3.3 defines the normalized IODs.</p>
+<p>Many DICOM Real World objects do not have corresponding normalized IODs,
+presumably because there is no common need to send data only corresponding to -
+say - a patient - without also sending related information like - say - an
+image.  If you do want to send information relating to a patient with
+information relating to an image, you need a <em>composite IOD</em>.</p>
+<p>An IOD that contains attributes from more than one object in the DICOM Real
+World is a <em>Composite IOD</em>.  PS 3.3 again:</p>
+<blockquote>
+<div>3.8.2 Composite IOD: an Information Object Definition which represents parts
+of several entities in the DICOM Application Model. Such an IOD includes
+Attributes which are not inherent in the Real-World Object that the IOD
+represents but rather are inherent in related Real-World Objects</div></blockquote>
+<p>Annex A of PS 3.3 defines the composite IODs.</p>
+<p>DICOM MR or CT image IODs are classic examples of composite IODs, because they
+contain information not just about the image itself, but also information about
+the patient, the study, the series, the frame of reference and the equipment.</p>
+<p>The term <em>Information Entity</em> (IE) refers to a part of a composite IOD that
+relates to a single DICOM Real World object.  PS 3.3:</p>
+<blockquote>
+<div>3.8.6 Information entity: that portion of information defined by a Composite
+IOD which is related to one specific class of Real-World Object. There is a
+one-to-one correspondence between Information Entities and entities in the
+DICOM Application Model.</div></blockquote>
+<p>IEs are names of DICOM Real World objects that label parts of a composite IOD.
+IEs have no intrinsic content, but serve as meaningful labels for a group of
+<em>modules</em> (see below) that refer to the same Real World object.</p>
+<p>Annex A 1.2, PS 3.3 lists all the IEs used in composite IODs.</p>
+<p>For example, section A.4 in PD 3.3 defines the composite IOD for an MR Image -
+the Magnetic Resonance Image Object Definition. The definition looks like this
+(table A.4-1 of PS 3.3)</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="22%" />
+<col width="10%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">IE</th>
+<th class="head">Module</th>
+<th class="head">Reference</th>
+<th class="head">Usage</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td rowspan="2">Patient</td>
+<td>Patient</td>
+<td>C.7.1.1</td>
+<td>M</td>
+</tr>
+<tr class="row-odd"><td>Clinical Trial Subject</td>
+<td>C.7.1.3</td>
+<td>U</td>
+</tr>
+<tr class="row-even"><td rowspan="3">Study</td>
+<td>General Study</td>
+<td>C.7.2.1</td>
+<td>M</td>
+</tr>
+<tr class="row-odd"><td>Patient Study</td>
+<td>C.7.2.2</td>
+<td>U</td>
+</tr>
+<tr class="row-even"><td>Clinical Trial Study</td>
+<td>C.7.2.3</td>
+<td>U</td>
+</tr>
+<tr class="row-odd"><td rowspan="2">Series</td>
+<td>General Series</td>
+<td>C.7.3.1</td>
+<td>M</td>
+</tr>
+<tr class="row-even"><td>Clinical Trial Series</td>
+<td>C.7.3.2</td>
+<td>U</td>
+</tr>
+<tr class="row-odd"><td>Frame of Reference</td>
+<td>Frame of Reference</td>
+<td>C.7.4.1</td>
+<td>M</td>
+</tr>
+<tr class="row-even"><td>Equipment</td>
+<td>General Equipment</td>
+<td>C.7.5.1</td>
+<td>M</td>
+</tr>
+<tr class="row-odd"><td rowspan="10">Image</td>
+<td>General Image</td>
+<td>C.7.6.1</td>
+<td>M</td>
+</tr>
+<tr class="row-even"><td>Image Plane</td>
+<td>C.7.6.2</td>
+<td>M</td>
+</tr>
+<tr class="row-odd"><td>Image Pixel</td>
+<td>C.7.6.3</td>
+<td>M</td>
+</tr>
+<tr class="row-even"><td>Contrast/bolus</td>
+<td>C.7.6.4</td>
+<td>C - Required if contrast media was used in this image</td>
+</tr>
+<tr class="row-odd"><td>Device</td>
+<td>C.7.6.12</td>
+<td>U</td>
+</tr>
+<tr class="row-even"><td>Specimen</td>
+<td>C.7.6.22</td>
+<td>U</td>
+</tr>
+<tr class="row-odd"><td>MR Image</td>
+<td>C.8.3.1</td>
+<td>M</td>
+</tr>
+<tr class="row-even"><td>Overlay Plane</td>
+<td>C.9.2</td>
+<td>U</td>
+</tr>
+<tr class="row-odd"><td>VOI LUT</td>
+<td>C.11.2</td>
+<td>U</td>
+</tr>
+<tr class="row-even"><td>SOP Common</td>
+<td>C.12.1</td>
+<td>M</td>
+</tr>
+</tbody>
+</table>
+<p>As you can see, the MR Image IOD is composite and composed of Patient, Study,
+Series, Frame of Reference, Equipment and Image IEs.</p>
+<p>The <em>module</em> heading defines which modules make up the information relevant to
+the IE.</p>
+<p>A module is a named and defined grouping of attributes (data elements) with
+related meaning.  PS 3.3:</p>
+<blockquote>
+<div>3.8.8 Module: A set of Attributes within an Information Entity or Normalized
+IOD which are logically related to each other.</div></blockquote>
+<p>Grouping attributes into modules simplifies the definition of multiple composite
+IODs.  For example, the composite IODs for a CT image and an MR Image both have
+modules for Patient, Clinical Trial Subject, etc.</p>
+<p>Annex C of PS 3.3 defines all the modules used for the IOD definitions.  For
+example, from the table above, we see that the &#8220;Patient&#8221; module is at section
+C.7.1.1 of PS 3.3.  This section gives a table of all the attributes (data
+elements) in this module.</p>
+<p>The last column in the table above records whether the particular module is
+Mandatory, Conditional or User Option (defined in section A 1.3 of PS 3.3)</p>
+<p>Lastly module definitions may make use of <em>Attribute macros</em>.  Attribute macros
+are very much like modules, in that they are a named group of attributes that
+often occur together in module definitions, or definitions of other macros.
+From PS 3.3:</p>
+<blockquote>
+<div>3.11.1 Attribute Macro: a set of Attributes that are described in a single
+table that is referenced by multiple Modules or other tables.</div></blockquote>
+<p>For example, here is the Patient Orientation Macro definition table from section
+10.12 in PS 3.3:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="9%" />
+<col width="3%" />
+<col width="71%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Attribute Name</th>
+<th class="head">Tag</th>
+<th class="head">Type</th>
+<th class="head">Attribute Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Patient Orientation Code Sequence</td>
+<td>(0054,0410)</td>
+<td>1</td>
+<td>Sequence that describes the orientation of the patient with respect to gravity. See C.8.11.5.1.2 for further explanation. Only a single Item shall be included in this Sequence.</td>
+</tr>
+<tr class="row-odd"><td colspan="3">&gt;Include &#8216;Code Sequence Macro&#8217; Table 8.8-1.</td>
+<td>Baseline Context ID 19</td>
+</tr>
+<tr class="row-even"><td>&gt;Patient Orientation Modifier Code Sequence</td>
+<td>(0054,0412)</td>
+<td>1C</td>
+<td>Patient orientation modifier. Required if needed to fully specify the orientation of the patient with respect to gravity. Only a single Item shall be included in this Sequence.</td>
+</tr>
+<tr class="row-odd"><td colspan="3">&gt;&gt;Include &#8216;Code Sequence Macro&#8217; Table 8.8-1.</td>
+<td>Baseline Context ID 20</td>
+</tr>
+<tr class="row-even"><td>Patient Gantry Relationship Code Sequence</td>
+<td>(0054,0414)</td>
+<td>3</td>
+<td>Sequence that describes the orientation of the patient with respect to the head of the table. See Section C.8.4.6.1.3 for further explanation. Only a single Item is permitted in this Sequence.</td>
+</tr>
+<tr class="row-odd"><td colspan="3">&gt;Include &#8216;Code Sequence Macro&#8217; Table 8.8-1.</td>
+<td>Baseline Context ID 21</td>
+</tr>
+</tbody>
+</table>
+<p>As you can see, this macro specifies some tags that should appear when this
+macro is &#8220;Included&#8221; - and also includes other macros.</p>
+</div>
+</div>
+<div class="section" id="dicom-services-dimse">
+<h3>DICOM services (DIMSE)<a class="headerlink" href="#dicom-services-dimse" title="Permalink to this headline">¶</a></h3>
+<p>We now go back to messages.</p>
+<p>The DICOM application sending the message is called the Service Class User
+(SCU). We might also call this the client.</p>
+<p>The DICOM application receiving the message is called the Service Class Provider
+(SCP).  We might also call this the server - for this particular message.</p>
+<p>Quoting from <a class="reference external" href="http://medical.nema.org/Dicom/2011/11_07pu.pdf">PS 3.7</a> section 6.3:</p>
+<blockquote>
+<div>A Message is composed of a Command Set followed by a conditional Data Set
+(see PS 3.5 for the definition of a Data Set). The Command Set is used to
+indicate the operations/notifications to be performed on or with the Data
+Set.</div></blockquote>
+<p>The command set consists of command elements (elements with group number 0000).</p>
+<p>Valid sequences of command elements in the command set form valid DICOM Message
+Service Elements (DIMSEs).  Sections 9 and 10 of PS 3.7 define the valid DIMSEs.</p>
+<p>For example, there is a DIMSE service called &#8220;C-ECHO&#8221; that requests confirmation
+from the responding application that the echo message arrived.</p>
+<p>The definition of the DIMSE services specifies, for a particular DIMSE service,
+whether the DIMSE commend set should be followed by a data set.</p>
+<p>In particular, the data set will be a full Information Object Definition&#8217;s worth
+of data.</p>
+<p>Of most interest to us, the &#8220;C-STORE&#8221; service command set should always be
+followed by a data set conforming to an image data IOD.</p>
+</div>
+<div class="section" id="dicom-service-object-pairs-sops">
+<h3>DICOM service object pairs (SOPs)<a class="headerlink" href="#dicom-service-object-pairs-sops" title="Permalink to this headline">¶</a></h3>
+<p>As we&#8217;ve seen, some DIMSE services should be followed by particular types of
+data.</p>
+<p>For example, the &#8220;C-STORE&#8221; DIMSE command set should be followed by an IOD of
+data to store, but the &#8220;C-ECHO&#8221; has no data object following.</p>
+<p>The association of a particular type of DIMSE (command set) with the associated
+IOD&#8217;s-worth of data is a Service Object Pair. The DIMSE is the &#8220;Service&#8221; and the
+data IOD is the &#8220;Object&#8221;.  Thus the combination of a &#8220;C-STORE&#8221; DIMSE and an &#8220;MR
+Image&#8221; IOD would be a SOP.  Services that do not have data following are a
+particular type of SOP where the Object is null.  For example, the &#8220;C-ECHO&#8221;
+service is the entire contents of a Verification SOP (PS 3.4, section A.4).</p>
+<p>DICOM defines which pairings are possible, by listing them all as Service Object
+Pair classes (SOP classes).</p>
+<p>Usually a SOP class describes the pairing of exactly one DIMSE service with one
+defined IOD.  For example, the &#8220;MR Image storage&#8221; SOP class pairs the &#8220;C-STORE&#8221;
+DIMSE with the &#8220;MR Image&#8221; IOD.</p>
+<p>Sometimes a SOP class describes the pairings of one of several possible DIMSEs
+with a particular IOP.  For example, the &#8220;Modality Performed Procedure Step&#8221; SOP
+class describes the pairing of <em>either</em> (&#8220;N-CREATE&#8221;, Modality Performed
+Procedure Step IOD) <em>or</em> (&#8220;N-SET&#8221;, Modality Performed Procedure Step IOD) (see
+PS 3.4 F.7.1).  For this reason a SOP class is best described as the pairing of
+a <em>DIMSE service group</em> with an IOD, where the DIMSE service group usually
+contains just one DIMSE service, but sometimes has more. For example, the &#8220;MR
+Image Storage&#8221; SOP class has a DIMSE service group of one element [&#8220;C-STORE&#8221;].
+The &#8220;Modality Performed Procedure Step&#8221; SOP class has a DIMSE service group with
+two elements: [&#8220;N-CREATE&#8221;, &#8220;N-SET&#8221;].</p>
+<p>From PS 3.4:</p>
+<blockquote>
+<div><p>6.4 DIMSE SERVICE GROUP</p>
+<p>DIMSE Service Group specifies one or more operations/notifications defined
+in PS 3.7 which are applicable to an IOD.</p>
+<p>DIMSE Service Groups are defined in this Part of the DICOM Standard, in the
+specification of a Service - Object Pair Class.</p>
+<p>6.5 SERVICE-OBJECT PAIR (SOP) CLASS</p>
+<p>A Service-Object Pair (SOP) Class is defined by the union of an IOD and a
+DIMSE Service Group. The SOP Class definition contains the rules and
+semantics which may restrict the use of the services in the DIMSE Service
+Group and/or the Attributes of the IOD.</p>
+</div></blockquote>
+<p>The Annexes of <a class="reference external" href="http://medical.nema.org/Dicom/2011/11_04pu.pdf">PS 3.4</a> define the SOP classes.</p>
+<p>A pairing of actual data of form (DIMSE group, IOD) that conforms to the SOP
+class definition, is a SOP class instance. That is, the instance comprises the
+actual values of the service and data elements being transmitted.</p>
+<p>For example, there is a SOP class called &#8220;MR Image Storage&#8221;.  This is the
+association of the &#8220;C-STORE&#8221; DIMSE command with the &#8220;MR Image&#8221; IOD.  A
+particular &#8220;C-STORE&#8221; request command set along with the particular &#8220;MR Image&#8221;
+IOD data set would be an <em>instance</em> of the MR Image SOP class.</p>
+</div>
+<div class="section" id="dicom-files">
+<h3>DICOM files<a class="headerlink" href="#dicom-files" title="Permalink to this headline">¶</a></h3>
+<p>Now let us return to the confusing definition of the DICOM file format from
+section 7 of PS 3.10:</p>
+<blockquote>
+<div><p>7 DICOM File Format</p>
+<p>The DICOM File Format provides a means to encapsulate in a file the Data Set
+representing a SOP Instance related to a DICOM IOD. As shown in Figure 7-1,
+the byte stream of the Data Set is placed into the file after the DICOM File
+Meta Information. Each file contains a single SOP Instance.</p>
+</div></blockquote>
+<p>The DICOM file Meta Information is:</p>
+<ul class="simple">
+<li>File preamble - 128 bytes, content unspecified</li>
+<li>DICOM prefix - 4 bytes &#8220;DICM&#8221; character string</li>
+<li>5 meta information elements (group 0002) as defined in table 7.1 of PS 3.10</li>
+</ul>
+<p>There follows the IOD dataset part of the SOP instance.  In the case of a file
+storing an MR Image, this dataset will be of IOD type &#8220;MR Image&#8221;</p>
+<p class="rubric">Footnotes</p>
+<table class="docutils footnote" frame="void" id="can-be-two" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Actually, it is not quite true that there can be only one VR
+associated with a particular tag.  A small number of tags have VRs which can
+be either Unsigned Short (US) or Signed Short (SS). An even smaller number
+of tags can be either Other Byte (OB) or Other Word (OW).  For all the
+relevant tags the VM is a set number (1, 3, or 4). So, in the OB / OW cases
+you can tell which of OB or OW you have by the Value Length.  The US / SS
+cases seem to refer to pixel values; presumably they are US if the Pixel
+Representation (tag 0028, 0103) is 0 (for unsigned) and SS if the Pixel
+Representation is 1 (for signed)</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2006-2015, Matthew Brett, Michael Hanke and Eric Larson &lt;nipy-devel@neuroimaging.scipy.org&gt;.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+  </body>
+</html>

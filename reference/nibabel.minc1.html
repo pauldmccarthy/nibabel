@@ -1,0 +1,455 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Neuroimaging in Python &mdash; NiBabel 2.0.2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/nibabel.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="NiBabel 2.0.2 documentation" href="../index.html" />
+    <link rel="up" title="API Documentation" href="../api.html" />
+    <link rel="next" title="minc2" href="nibabel.minc2.html" />
+    <link rel="prev" title="freesurfer" href="nibabel.freesurfer.html" />
+  <meta name="keywords" content="nipy, neuroimaging, python, neuroscience">
+
+  </head>
+  <body role="document">
+<div style="background-color: white; text-align: left; padding-left: 150px; padding-bottom:50px; padding-top:20px; background-image: url(../_static/nipy-logo-bg-138x120.png); background-repeat: no-repeat;">
+<h1>NiBabel</h1>
+<h3 style="margin-top:-5px;color:#2f83c8">Access a cacophony of neuro-imaging file formats</h3>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="nibabel.minc2.html" title="minc2"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="nibabel.freesurfer.html" title="freesurfer"
+             accesskey="P">previous</a> |</li>
+  <li><a href="http://nipy.org/">Community</a> |&nbsp;</li>
+  <li><a href="../index.html">NiBabel Home</a> |&nbsp;</li>
+  <li><a href="https://mail.python.org/mailman/listinfo/neuroimaging">Mailing list</a> |&nbsp;</li>
+  <li><a href="legal.html">License</a> |&nbsp;</li>
+
+          <li class="nav-item nav-item-1"><a href="../api.html" accesskey="U">API Documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">minc1</span></code></a><ul>
+<li><a class="reference internal" href="#minc1file"><code class="docutils literal"><span class="pre">Minc1File</span></code></a></li>
+<li><a class="reference internal" href="#minc1image"><code class="docutils literal"><span class="pre">Minc1Image</span></code></a></li>
+<li><a class="reference internal" href="#mincerror"><code class="docutils literal"><span class="pre">MincError</span></code></a></li>
+<li><a class="reference internal" href="#mincfile"><code class="docutils literal"><span class="pre">MincFile</span></code></a></li>
+<li><a class="reference internal" href="#mincheader"><code class="docutils literal"><span class="pre">MincHeader</span></code></a></li>
+<li><a class="reference internal" href="#mincimage"><code class="docutils literal"><span class="pre">MincImage</span></code></a></li>
+<li><a class="reference internal" href="#mincimagearrayproxy"><code class="docutils literal"><span class="pre">MincImageArrayProxy</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="nibabel.freesurfer.html"
+                        title="previous chapter"><code class="docutils literal"><span class="pre">freesurfer</span></code></a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="nibabel.minc2.html"
+                        title="next chapter"><code class="docutils literal"><span class="pre">minc2</span></code></a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/reference/nibabel.minc1.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<p><img src="../_static/reggie.png" alt="Reggie -- the one" /></p>
+
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-nibabel.minc1">
+<span id="minc1"></span><h1><code class="xref py py-mod docutils literal"><span class="pre">minc1</span></code><a class="headerlink" href="#module-nibabel.minc1" title="Permalink to this headline">¶</a></h1>
+<p>Read MINC1 format images</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#nibabel.minc1.Minc1File" title="nibabel.minc1.Minc1File"><code class="xref py py-obj docutils literal"><span class="pre">Minc1File</span></code></a>(mincfile)</td>
+<td>Class to wrap MINC1 format opened netcdf object</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#nibabel.minc1.Minc1Image" title="nibabel.minc1.Minc1Image"><code class="xref py py-obj docutils literal"><span class="pre">Minc1Image</span></code></a>(dataobj,&nbsp;affine[,&nbsp;header,&nbsp;extra,&nbsp;...])</td>
+<td>Class for MINC1 format images</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#nibabel.minc1.MincError" title="nibabel.minc1.MincError"><code class="xref py py-obj docutils literal"><span class="pre">MincError</span></code></a></td>
+<td>Error when reading MINC files</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#nibabel.minc1.MincFile" title="nibabel.minc1.MincFile"><code class="xref py py-obj docutils literal"><span class="pre">MincFile</span></code></a>(*args,&nbsp;**kwargs)</td>
+<td>Deprecated alternative name for Minc1File</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#nibabel.minc1.MincHeader" title="nibabel.minc1.MincHeader"><code class="xref py py-obj docutils literal"><span class="pre">MincHeader</span></code></a>([data_dtype,&nbsp;shape,&nbsp;zooms])</td>
+<td>Class to contain header for MINC formats</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#nibabel.minc1.MincImage" title="nibabel.minc1.MincImage"><code class="xref py py-obj docutils literal"><span class="pre">MincImage</span></code></a>(*args,&nbsp;**kwargs)</td>
+<td>Deprecated alternative name for Minc1Image</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#nibabel.minc1.MincImageArrayProxy" title="nibabel.minc1.MincImageArrayProxy"><code class="xref py py-obj docutils literal"><span class="pre">MincImageArrayProxy</span></code></a>(minc_file)</td>
+<td>MINC implementation of array proxy protocol</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="minc1file">
+<h2><a class="reference internal" href="#nibabel.minc1.Minc1File" title="nibabel.minc1.Minc1File"><code class="xref py py-class docutils literal"><span class="pre">Minc1File</span></code></a><a class="headerlink" href="#minc1file" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="nibabel.minc1.Minc1File">
+<em class="property">class </em><code class="descclassname">nibabel.minc1.</code><code class="descname">Minc1File</code><span class="sig-paren">(</span><em>mincfile</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.minc1.Minc1File" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Class to wrap MINC1 format opened netcdf object</p>
+<p>Although it has some of the same methods as a <code class="docutils literal"><span class="pre">Header</span></code>, we use
+this only when reading a MINC file, to pull out useful header
+information, and for the method of reading the data out</p>
+<dl class="method">
+<dt id="nibabel.minc1.Minc1File.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>mincfile</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.minc1.Minc1File.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nibabel.minc1.Minc1File.get_affine">
+<code class="descname">get_affine</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.minc1.Minc1File.get_affine" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nibabel.minc1.Minc1File.get_data_dtype">
+<code class="descname">get_data_dtype</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.minc1.Minc1File.get_data_dtype" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nibabel.minc1.Minc1File.get_data_shape">
+<code class="descname">get_data_shape</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.minc1.Minc1File.get_data_shape" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nibabel.minc1.Minc1File.get_scaled_data">
+<code class="descname">get_scaled_data</code><span class="sig-paren">(</span><em>sliceobj=()</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.minc1.Minc1File.get_scaled_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return scaled data for slice definition <cite>sliceobj</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>sliceobj</strong> : tuple, optional</p>
+<blockquote>
+<div><p>slice definition. If not specified, return whole array</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>scaled_arr</strong> : array</p>
+<blockquote class="last">
+<div><p>array from minc file with scaling applied</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="nibabel.minc1.Minc1File.get_zooms">
+<code class="descname">get_zooms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.minc1.Minc1File.get_zooms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get real-world sizes of voxels</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="minc1image">
+<h2><a class="reference internal" href="#nibabel.minc1.Minc1Image" title="nibabel.minc1.Minc1Image"><code class="xref py py-class docutils literal"><span class="pre">Minc1Image</span></code></a><a class="headerlink" href="#minc1image" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="nibabel.minc1.Minc1Image">
+<em class="property">class </em><code class="descclassname">nibabel.minc1.</code><code class="descname">Minc1Image</code><span class="sig-paren">(</span><em>dataobj</em>, <em>affine</em>, <em>header=None</em>, <em>extra=None</em>, <em>file_map=None</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.minc1.Minc1Image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="nibabel.spatialimages.html#nibabel.spatialimages.SpatialImage" title="nibabel.spatialimages.SpatialImage"><code class="xref py py-class docutils literal"><span class="pre">nibabel.spatialimages.SpatialImage</span></code></a></p>
+<p>Class for MINC1 format images</p>
+<p>The MINC1 image class uses the default header type, rather than a specific
+MINC header type - and reads the relevant information from the MINC file on
+load.</p>
+<p>Initialize image</p>
+<p>The image is a combination of (array, affine matrix, header), with
+optional metadata in <cite>extra</cite>, and filename / file-like objects contained
+in the <cite>file_map</cite> mapping.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>dataobj</strong> : object</p>
+<blockquote>
+<div><p>Object containg image data.  It should be some object that retuns an
+array from <code class="docutils literal"><span class="pre">np.asanyarray</span></code>.  It should have a <code class="docutils literal"><span class="pre">shape</span></code> attribute
+or property</p>
+</div></blockquote>
+<p><strong>affine</strong> : None or (4,4) array-like</p>
+<blockquote>
+<div><p>homogenous affine giving relationship between voxel coordinates and
+world coordinates.  Affine can also be None.  In this case,
+<code class="docutils literal"><span class="pre">obj.affine</span></code> also returns None, and the affine as written to disk
+will depend on the file format.</p>
+</div></blockquote>
+<p><strong>header</strong> : None or mapping or header instance, optional</p>
+<blockquote>
+<div><p>metadata for this image format</p>
+</div></blockquote>
+<p><strong>extra</strong> : None or mapping, optional</p>
+<blockquote>
+<div><p>metadata to associate with image that cannot be stored in the
+metadata of this image type</p>
+</div></blockquote>
+<p><strong>file_map</strong> : mapping, optional</p>
+<blockquote class="last">
+<div><p>mapping giving file information for this image format</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="nibabel.minc1.Minc1Image.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>dataobj</em>, <em>affine</em>, <em>header=None</em>, <em>extra=None</em>, <em>file_map=None</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.minc1.Minc1Image.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize image</p>
+<p>The image is a combination of (array, affine matrix, header), with
+optional metadata in <cite>extra</cite>, and filename / file-like objects contained
+in the <cite>file_map</cite> mapping.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>dataobj</strong> : object</p>
+<blockquote>
+<div><p>Object containg image data.  It should be some object that retuns an
+array from <code class="docutils literal"><span class="pre">np.asanyarray</span></code>.  It should have a <code class="docutils literal"><span class="pre">shape</span></code> attribute
+or property</p>
+</div></blockquote>
+<p><strong>affine</strong> : None or (4,4) array-like</p>
+<blockquote>
+<div><p>homogenous affine giving relationship between voxel coordinates and
+world coordinates.  Affine can also be None.  In this case,
+<code class="docutils literal"><span class="pre">obj.affine</span></code> also returns None, and the affine as written to disk
+will depend on the file format.</p>
+</div></blockquote>
+<p><strong>header</strong> : None or mapping or header instance, optional</p>
+<blockquote>
+<div><p>metadata for this image format</p>
+</div></blockquote>
+<p><strong>extra</strong> : None or mapping, optional</p>
+<blockquote>
+<div><p>metadata to associate with image that cannot be stored in the
+metadata of this image type</p>
+</div></blockquote>
+<p><strong>file_map</strong> : mapping, optional</p>
+<blockquote class="last">
+<div><p>mapping giving file information for this image format</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nibabel.minc1.Minc1Image.ImageArrayProxy">
+<code class="descname">ImageArrayProxy</code><a class="headerlink" href="#nibabel.minc1.Minc1Image.ImageArrayProxy" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#nibabel.minc1.MincImageArrayProxy" title="nibabel.minc1.MincImageArrayProxy"><code class="xref py py-class docutils literal"><span class="pre">MincImageArrayProxy</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nibabel.minc1.Minc1Image.files_types">
+<code class="descname">files_types</code><em class="property"> = (('image', '.mnc'),)</em><a class="headerlink" href="#nibabel.minc1.Minc1Image.files_types" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="nibabel.minc1.Minc1Image.from_file_map">
+<em class="property">classmethod </em><code class="descname">from_file_map</code><span class="sig-paren">(</span><em>klass</em>, <em>file_map</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.minc1.Minc1Image.from_file_map" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="nibabel.minc1.Minc1Image.header_class">
+<code class="descname">header_class</code><a class="headerlink" href="#nibabel.minc1.Minc1Image.header_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#nibabel.minc1.MincHeader" title="nibabel.minc1.MincHeader"><code class="xref py py-class docutils literal"><span class="pre">MincHeader</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="mincerror">
+<h2><a class="reference internal" href="#nibabel.minc1.MincError" title="nibabel.minc1.MincError"><code class="xref py py-class docutils literal"><span class="pre">MincError</span></code></a><a class="headerlink" href="#mincerror" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="nibabel.minc1.MincError">
+<em class="property">class </em><code class="descclassname">nibabel.minc1.</code><code class="descname">MincError</code><a class="headerlink" href="#nibabel.minc1.MincError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+<p>Error when reading MINC files</p>
+<dl class="method">
+<dt id="nibabel.minc1.MincError.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.minc1.MincError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.__init__(...) initializes x; see help(type(x)) for signature</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="mincfile">
+<h2><a class="reference internal" href="#nibabel.minc1.MincFile" title="nibabel.minc1.MincFile"><code class="xref py py-class docutils literal"><span class="pre">MincFile</span></code></a><a class="headerlink" href="#mincfile" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="nibabel.minc1.MincFile">
+<em class="property">class </em><code class="descclassname">nibabel.minc1.</code><code class="descname">MincFile</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.minc1.MincFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="nibabel.deprecated.html#nibabel.deprecated.FutureWarningMixin" title="nibabel.deprecated.FutureWarningMixin"><code class="xref py py-class docutils literal"><span class="pre">nibabel.deprecated.FutureWarningMixin</span></code></a>, <a class="reference internal" href="#nibabel.minc1.Minc1File" title="nibabel.minc1.Minc1File"><code class="xref py py-class docutils literal"><span class="pre">nibabel.minc1.Minc1File</span></code></a></p>
+<p>Deprecated alternative name for Minc1File</p>
+<dl class="method">
+<dt id="nibabel.minc1.MincFile.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.minc1.MincFile.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="nibabel.minc1.MincFile.warn_message">
+<code class="descname">warn_message</code><em class="property"> = 'MincFile is deprecated; please use Minc1File instead'</em><a class="headerlink" href="#nibabel.minc1.MincFile.warn_message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="mincheader">
+<h2><a class="reference internal" href="#nibabel.minc1.MincHeader" title="nibabel.minc1.MincHeader"><code class="xref py py-class docutils literal"><span class="pre">MincHeader</span></code></a><a class="headerlink" href="#mincheader" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="nibabel.minc1.MincHeader">
+<em class="property">class </em><code class="descclassname">nibabel.minc1.</code><code class="descname">MincHeader</code><span class="sig-paren">(</span><em>data_dtype=&lt;type 'numpy.float32'&gt;</em>, <em>shape=(0</em>, <em>)</em>, <em>zooms=None</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.minc1.MincHeader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="nibabel.spatialimages.html#nibabel.spatialimages.Header" title="nibabel.spatialimages.Header"><code class="xref py py-class docutils literal"><span class="pre">nibabel.spatialimages.Header</span></code></a></p>
+<p>Class to contain header for MINC formats</p>
+<dl class="method">
+<dt id="nibabel.minc1.MincHeader.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>data_dtype=&lt;type 'numpy.float32'&gt;</em>, <em>shape=(0</em>, <em>)</em>, <em>zooms=None</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.minc1.MincHeader.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nibabel.minc1.MincHeader.data_from_fileobj">
+<code class="descname">data_from_fileobj</code><span class="sig-paren">(</span><em>fileobj</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.minc1.MincHeader.data_from_fileobj" title="Permalink to this definition">¶</a></dt>
+<dd><p>See Header class for an implementation we can&#8217;t use</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nibabel.minc1.MincHeader.data_layout">
+<code class="descname">data_layout</code><em class="property"> = 'C'</em><a class="headerlink" href="#nibabel.minc1.MincHeader.data_layout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nibabel.minc1.MincHeader.data_to_fileobj">
+<code class="descname">data_to_fileobj</code><span class="sig-paren">(</span><em>data</em>, <em>fileobj</em>, <em>rescale=True</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.minc1.MincHeader.data_to_fileobj" title="Permalink to this definition">¶</a></dt>
+<dd><p>See Header class for an implementation we can&#8217;t use</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="mincimage">
+<h2><a class="reference internal" href="#nibabel.minc1.MincImage" title="nibabel.minc1.MincImage"><code class="xref py py-class docutils literal"><span class="pre">MincImage</span></code></a><a class="headerlink" href="#mincimage" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="nibabel.minc1.MincImage">
+<em class="property">class </em><code class="descclassname">nibabel.minc1.</code><code class="descname">MincImage</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.minc1.MincImage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="nibabel.deprecated.html#nibabel.deprecated.FutureWarningMixin" title="nibabel.deprecated.FutureWarningMixin"><code class="xref py py-class docutils literal"><span class="pre">nibabel.deprecated.FutureWarningMixin</span></code></a>, <a class="reference internal" href="#nibabel.minc1.Minc1Image" title="nibabel.minc1.Minc1Image"><code class="xref py py-class docutils literal"><span class="pre">nibabel.minc1.Minc1Image</span></code></a></p>
+<p>Deprecated alternative name for Minc1Image</p>
+<dl class="method">
+<dt id="nibabel.minc1.MincImage.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.minc1.MincImage.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="nibabel.minc1.MincImage.warn_message">
+<code class="descname">warn_message</code><em class="property"> = 'MincImage is deprecated; please use Minc1Image instead'</em><a class="headerlink" href="#nibabel.minc1.MincImage.warn_message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="mincimagearrayproxy">
+<h2><a class="reference internal" href="#nibabel.minc1.MincImageArrayProxy" title="nibabel.minc1.MincImageArrayProxy"><code class="xref py py-class docutils literal"><span class="pre">MincImageArrayProxy</span></code></a><a class="headerlink" href="#mincimagearrayproxy" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="nibabel.minc1.MincImageArrayProxy">
+<em class="property">class </em><code class="descclassname">nibabel.minc1.</code><code class="descname">MincImageArrayProxy</code><span class="sig-paren">(</span><em>minc_file</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.minc1.MincImageArrayProxy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>MINC implementation of array proxy protocol</p>
+<p>The array proxy allows us to freeze the passed fileobj and
+header such that it returns the expected data array.</p>
+<dl class="method">
+<dt id="nibabel.minc1.MincImageArrayProxy.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>minc_file</em><span class="sig-paren">)</span><a class="headerlink" href="#nibabel.minc1.MincImageArrayProxy.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="nibabel.minc1.MincImageArrayProxy.is_proxy">
+<code class="descname">is_proxy</code><a class="headerlink" href="#nibabel.minc1.MincImageArrayProxy.is_proxy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="nibabel.minc1.MincImageArrayProxy.shape">
+<code class="descname">shape</code><a class="headerlink" href="#nibabel.minc1.MincImageArrayProxy.shape" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2006-2015, Matthew Brett, Michael Hanke and Eric Larson &lt;nipy-devel@neuroimaging.scipy.org&gt;.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+  </body>
+</html>

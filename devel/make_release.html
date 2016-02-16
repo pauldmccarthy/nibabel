@@ -1,0 +1,379 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Neuroimaging in Python &mdash; NiBabel 2.0.2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/nibabel.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="NiBabel 2.0.2 documentation" href="../index.html" />
+    <link rel="up" title="Developer documentation page" href="index.html" />
+    <link rel="next" title="Advanced Testing" href="advanced_testing.html" />
+    <link rel="prev" title="Design of data packages for the nibabel and the nipy suite" href="data_pkg_design.html" />
+  <meta name="keywords" content="nipy, neuroimaging, python, neuroscience">
+
+  </head>
+  <body role="document">
+<div style="background-color: white; text-align: left; padding-left: 150px; padding-bottom:50px; padding-top:20px; background-image: url(../_static/nipy-logo-bg-138x120.png); background-repeat: no-repeat;">
+<h1>NiBabel</h1>
+<h3 style="margin-top:-5px;color:#2f83c8">Access a cacophony of neuro-imaging file formats</h3>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="advanced_testing.html" title="Advanced Testing"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="data_pkg_design.html" title="Design of data packages for the nibabel and the nipy suite"
+             accesskey="P">previous</a> |</li>
+  <li><a href="http://nipy.org/">Community</a> |&nbsp;</li>
+  <li><a href="../index.html">NiBabel Home</a> |&nbsp;</li>
+  <li><a href="https://mail.python.org/mailman/listinfo/neuroimaging">Mailing list</a> |&nbsp;</li>
+  <li><a href="legal.html">License</a> |&nbsp;</li>
+
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Developer documentation page</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">A guide to making a nibabel release</a><ul>
+<li><a class="reference internal" href="#release-tools">Release tools</a></li>
+<li><a class="reference internal" href="#release-checklist">Release checklist</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="data_pkg_design.html"
+                        title="previous chapter">Design of data packages for the nibabel and the nipy suite</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="advanced_testing.html"
+                        title="next chapter">Advanced Testing</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/devel/make_release.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<p><img src="../_static/reggie.png" alt="Reggie -- the one" /></p>
+
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="a-guide-to-making-a-nibabel-release">
+<span id="release-guide"></span><h1>A guide to making a nibabel release<a class="headerlink" href="#a-guide-to-making-a-nibabel-release" title="Permalink to this headline">¶</a></h1>
+<p>This is a guide for developers who are doing a nibabel release.</p>
+<div class="section" id="release-tools">
+<span id="id1"></span><h2>Release tools<a class="headerlink" href="#release-tools" title="Permalink to this headline">¶</a></h2>
+<p>There are some release utilities that come with nibabel.  nibabel should
+install these as the <code class="docutils literal"><span class="pre">nisext</span></code> package, and the testing stuff is
+understandably in the <code class="docutils literal"><span class="pre">testers</span></code> module of that package.  nibabel has
+Makefile targets for their use.  The relevant targets are:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>make check-version-info
+make check-files
+make sdist-tests
+</pre></div>
+</div>
+<p>The first installs the code from a git archive, from the repository, and for
+in-place use, and runs the <code class="docutils literal"><span class="pre">get_info()</span></code> function to confirm that
+installation is working and information parameters are set correctly.</p>
+<p>The second (<code class="docutils literal"><span class="pre">sdist-tests</span></code>) makes an sdist source distribution archive,
+installs it to a temporary directory, and runs the tests of that install.</p>
+</div>
+<div class="section" id="release-checklist">
+<span id="id2"></span><h2>Release checklist<a class="headerlink" href="#release-checklist" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">Review the open list of <a class="reference external" href="https://github.com/nipy/nibabel/issues">nibabel issues</a>.  Check whether there are
+outstanding issues that can be closed, and whether there are any issues that
+should delay the release.  Label them !</p>
+</li>
+<li><p class="first">Review and update the release notes.  Review and update the <code class="docutils literal"><span class="pre">Changelog</span></code>
+file.  Get a partial list of contributors with something like:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>git log 2.0.0.. | grep &#39;^Author&#39; | cut -d&#39; &#39; -f 2- | sort | uniq
+</pre></div>
+</div>
+<p>where <code class="docutils literal"><span class="pre">2.0.0</span></code> was the last release tag name.</p>
+<p>Then manually go over <code class="docutils literal"><span class="pre">git</span> <span class="pre">shortlog</span> <span class="pre">2.0.0..</span></code> to make sure the release
+notes are as complete as possible and that every contributor was recognized.</p>
+</li>
+<li><p class="first">Look at <code class="docutils literal"><span class="pre">doc/source/index.rst</span></code> and add any authors not yet acknowledged.</p>
+</li>
+<li><p class="first">Update new authors and add thansk in <code class="docutils literal"><span class="pre">doc/source/index.rst</span></code> and consider
+any updates to the <code class="docutils literal"><span class="pre">AUTHOR</span></code> file.</p>
+</li>
+<li><p class="first">Use the opportunity to update the <code class="docutils literal"><span class="pre">.mailmap</span></code> file if there are any
+duplicate authors listed from <code class="docutils literal"><span class="pre">git</span> <span class="pre">shortlog</span> <span class="pre">-nse</span></code>.</p>
+</li>
+<li><p class="first">Check the copyright year in <code class="docutils literal"><span class="pre">doc/source/conf.py</span></code></p>
+</li>
+<li><p class="first">Refresh the <code class="docutils literal"><span class="pre">REAMDE.rst</span></code> text from the <code class="docutils literal"><span class="pre">LONG_DESCRIPTION</span></code> in <code class="docutils literal"><span class="pre">info.py</span></code>
+by running <code class="docutils literal"><span class="pre">make</span> <span class="pre">refresh-readme</span></code>.</p>
+<p>Check the output of:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>rst2html.py README.rst &gt; ~/tmp/readme.html
+</pre></div>
+</div>
+<p>because this will be the output used by <a class="reference external" href="https://pypi.python.org/pypi">pypi</a></p>
+</li>
+<li><p class="first">Check the dependencies listed in <code class="docutils literal"><span class="pre">nibabel/info.py</span></code> (e.g.
+<code class="docutils literal"><span class="pre">NUMPY_MIN_VERSION</span></code>) and in <code class="docutils literal"><span class="pre">doc/source/installation.rst</span></code>.  They should
+at least match. Do they still hold?  Make sure <a class="reference external" href="https://travis-ci.org/nipy/nibabel">nibabel on travis</a> is
+testing the minimum dependencies specifically.</p>
+</li>
+<li><p class="first">Do a final check on the <a class="reference external" href="https://nipy.bic.berkeley.edu">nipy buildbot</a>.  Use the <code class="docutils literal"><span class="pre">try_branch.py</span></code>
+scheduler available in <a class="reference external" href="https://github.com/nipy/nibotmi">nibotmi</a> to test particular schedulers.</p>
+</li>
+<li><p class="first">If you have <a class="reference external" href="https://travis-ci.org">travis-ci</a> building set up for your own repo you might want to
+push the code in it&#8217;s current state to a branch that will build, e.g:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>git branch -D pre-release-test # in case branch already exists
+git co -b pre-release-test
+git push your-github-user pre-release-test -u
+</pre></div>
+</div>
+</li>
+<li><p class="first">Clean:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>make distclean
+</pre></div>
+</div>
+</li>
+<li><p class="first">Make sure all tests pass (from the nibabel root directory):</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>nosetests --with-doctest nibabel
+</pre></div>
+</div>
+</li>
+<li><p class="first">Make sure all tests pass from sdist:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>make sdist-tests
+</pre></div>
+</div>
+<p>and the three ways of installing (from tarball, repo, local in repo):</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>make check-version-info
+</pre></div>
+</div>
+<p>The last may not raise any errors, but you should detect in the output
+lines of this form:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>{&#39;sys_version&#39;: &#39;2.6.6 (r266:84374, Aug 31 2010, 11:00:51) \n[GCC 4.0.1 (Apple Inc. build 5493)]&#39;, &#39;commit_source&#39;: &#39;archive substitution&#39;, &#39;np_version&#39;: &#39;1.5.0&#39;, &#39;commit_hash&#39;: &#39;25b4125&#39;, &#39;pkg_path&#39;: &#39;/var/folders/jg/jgfZ12ZXHwGSFKD85xLpLk+++TI/-Tmp-/tmpGPiD3E/pylib/nibabel&#39;, &#39;sys_executable&#39;: &#39;/Library/Frameworks/Python.framework/Versions/2.6/Resources/Python.app/Contents/MacOS/Python&#39;, &#39;sys_platform&#39;: &#39;darwin&#39;}
+/var/folders/jg/jgfZ12ZXHwGSFKD85xLpLk+++TI/-Tmp-/tmpGPiD3E/pylib/nibabel/__init__.pyc
+{&#39;sys_version&#39;: &#39;2.6.6 (r266:84374, Aug 31 2010, 11:00:51) \n[GCC 4.0.1 (Apple Inc. build 5493)]&#39;, &#39;commit_source&#39;: &#39;installation&#39;, &#39;np_version&#39;: &#39;1.5.0&#39;, &#39;commit_hash&#39;: &#39;25b4125&#39;, &#39;pkg_path&#39;: &#39;/var/folders/jg/jgfZ12ZXHwGSFKD85xLpLk+++TI/-Tmp-/tmpGPiD3E/pylib/nibabel&#39;, &#39;sys_executable&#39;: &#39;/Library/Frameworks/Python.framework/Versions/2.6/Resources/Python.app/Contents/MacOS/Python&#39;, &#39;sys_platform&#39;: &#39;darwin&#39;}
+/Users/mb312/dev_trees/nibabel/nibabel/__init__.pyc
+{&#39;sys_version&#39;: &#39;2.6.6 (r266:84374, Aug 31 2010, 11:00:51) \n[GCC 4.0.1 (Apple Inc. build 5493)]&#39;, &#39;commit_source&#39;: &#39;repository&#39;, &#39;np_version&#39;: &#39;1.5.0&#39;, &#39;commit_hash&#39;: &#39;25b4125&#39;, &#39;pkg_path&#39;: &#39;/Users/mb312/dev_trees/nibabel/nibabel&#39;, &#39;sys_executable&#39;: &#39;/Library/Frameworks/Python.framework/Versions/2.6/Resources/Python.app/Contents/MacOS/Python&#39;, &#39;sys_platform&#39;: &#39;darwin&#39;}
+</pre></div>
+</div>
+</li>
+<li><p class="first">Check the <code class="docutils literal"><span class="pre">setup.py</span></code> file is picking up all the library code and scripts,
+with:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>make check-files
+</pre></div>
+</div>
+<p>Look for output at the end about missed files, such as:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Missed script files:  /Users/mb312/dev_trees/nibabel/bin/nib-dicomfs, /Users/mb312/dev_trees/nibabel/bin/nifti1_diagnose.py
+</pre></div>
+</div>
+<p>Fix <code class="docutils literal"><span class="pre">setup.py</span></code> to carry across any files that should be in the
+distribution.</p>
+</li>
+<li><p class="first">You probably have virtualenvs for different Python versions.  Check the
+tests pass for different configurations. The long-hand way looks like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>workon python26
+make distclean
+make sdist-tests
+deactivate
+</pre></div>
+</div>
+<p>etc for the different virtualenvs.</p>
+</li>
+<li><p class="first">Check on different platforms, particularly windows and PPC. Look at the
+<a class="reference external" href="https://nipy.bic.berkeley.edu">nipy buildbot</a> automated test runs for this.</p>
+</li>
+<li><p class="first">Check the documentation doctests (forcing Python 2):</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>make -C doc doctest SPHINXBUILD=&quot;python :math:`(which sphinx-build)&quot;
+</pre></div>
+</div>
+<p>This should also be tested by <a class="reference external" href="https://travis-ci.org/nipy/nibabel">nibabel on travis</a>.</p>
+</li>
+<li><p class="first">Check everything compiles without syntax errors:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>python -m compileall .
+</pre></div>
+</div>
+</li>
+<li><p class="first">The release should now be ready.</p>
+</li>
+<li><p class="first">Edit <code class="docutils literal"><span class="pre">nibabel/info.py</span></code> to set <code class="docutils literal"><span class="pre">_version_extra</span></code> to <code class="docutils literal"><span class="pre">''</span></code>; commit.
+Then:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>make source-release
+</pre></div>
+</div>
+</li>
+<li><p class="first">Once everything looks good, you are ready to upload the source release to
+PyPi.  See <a class="reference external" href="https://pythonhosted.org/an_example_pypi_project/setuptools.html">setuptools intro</a>.  Make sure you have a file
+<code class="docutils literal"><span class="pre">\`HOME/.pypirc</span></code>, of form:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>[distutils]
+index-servers =
+    pypi
+
+[pypi]
+username:your.pypi.username
+password:your-password
+
+[server-login]
+username:your.pypi.username
+password:your-password
+</pre></div>
+</div>
+</li>
+<li><p class="first">When ready:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>python setup.py register
+python setup.py sdist --formats=gztar,zip upload
+</pre></div>
+</div>
+</li>
+<li><p class="first">Tag the release with tag of form <code class="docutils literal"><span class="pre">2.0.0</span></code>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>git tag -am &quot;Something about this release&#39; 2.0.0
+</pre></div>
+</div>
+</li>
+<li><p class="first">Push the tag and any other changes to trunk with:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>git push --tags
+</pre></div>
+</div>
+</li>
+<li><p class="first">Force builds of the win32 and amd64 binaries from the buildbot. Go to pages:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://nipy.bic.berkeley.edu/builders/nibabel-bdist32-27">https://nipy.bic.berkeley.edu/builders/nibabel-bdist32-27</a></li>
+<li><a class="reference external" href="https://nipy.bic.berkeley.edu/builders/nibabel-bdist32-34">https://nipy.bic.berkeley.edu/builders/nibabel-bdist32-34</a></li>
+<li><a class="reference external" href="https://nipy.bic.berkeley.edu/builders/nibabel-bdist64-27">https://nipy.bic.berkeley.edu/builders/nibabel-bdist64-27</a></li>
+</ul>
+<p>For each of these, enter the revision number (e.g. &#8220;2.0.0&#8221;) in the field
+&#8220;Revision to build&#8221;. Then get the built binaries in:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://nipy.bic.berkeley.edu/nibabel-dist">https://nipy.bic.berkeley.edu/nibabel-dist</a></li>
+</ul>
+<p>and upload them to pypi with the admin files interface.</p>
+<p>If you are already on a Windows machine, you could have done the manual
+command to upload instead: <code class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">bdist_wininst</span> <span class="pre">upload</span></code>.</p>
+</li>
+<li><p class="first">Now the version number is OK, push the docs to github pages with:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>make upload-html
+</pre></div>
+</div>
+</li>
+<li><p class="first">Set up maintenance / development branches</p>
+<p>If this is this is a full release you need to set up two branches, one for
+further substantial development (often called &#8216;trunk&#8217;) and another for
+maintenance releases.</p>
+<ul>
+<li><p class="first">Branch to maintenance:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>git co -b maint/2.0.x
+</pre></div>
+</div>
+<p>Set <code class="docutils literal"><span class="pre">_version_extra</span></code> back to <code class="docutils literal"><span class="pre">.dev</span></code> and bump <code class="docutils literal"><span class="pre">_version_micro</span></code> by 1.
+Thus the maintenance series will have version numbers like - say -
+&#8216;2.0.1.dev&#8217; until the next maintenance release - say &#8216;2.0.1&#8217;.  Commit.
+Don&#8217;t forget to push upstream with something like:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>git push upstream-remote maint/2.0.x --set-upstream
+</pre></div>
+</div>
+</li>
+<li><p class="first">Start next development series:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>git co main-master
+</pre></div>
+</div>
+<p>then restore <code class="docutils literal"><span class="pre">.dev</span></code> to <code class="docutils literal"><span class="pre">_version_extra</span></code>, and bump <code class="docutils literal"><span class="pre">_version_minor</span></code>
+by 1.  Thus the development series (&#8216;trunk&#8217;) will have a version number
+here of &#8216;2.1.0.dev&#8217; and the next full release will be &#8216;2.1.0&#8217;.</p>
+<p>Next merge the maintenace branch with the &#8220;ours&#8221; strategy.  This just
+labels the maintenance <cite>info.py</cite> edits as seen but discarded, so we can
+merge from maintenance in future without getting spurious merge
+conflicts:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>git merge -s ours maint/2.0.x
+</pre></div>
+</div>
+</li>
+</ul>
+<p>If this is just a maintenance release from <code class="docutils literal"><span class="pre">maint/2.0.x</span></code> or similar, just
+tag and set the version number to - say - <code class="docutils literal"><span class="pre">2.0.2.dev</span></code>.</p>
+</li>
+<li><p class="first">Push the main branch:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>git push upstream-remote main-master
+</pre></div>
+</div>
+</li>
+<li><p class="first">Make next development release tag</p>
+<blockquote>
+<div><p>After each release the master branch should be tagged
+with an annotated (or/and signed) tag, naming the intended
+next version, plus an &#8216;upstream/&#8217; prefix and &#8216;dev&#8217; suffix.
+For example &#8216;upstream/1.0.0.dev&#8217; means &#8220;development start
+for upcoming version 1.0.0.</p>
+<p>This tag is used in the Makefile rules to create development snapshot
+releases to create proper versions for those. The version derives its name
+from the last available annotated tag, the number of commits since that,
+and an abbreviated SHA1. See the docs of <code class="docutils literal"><span class="pre">git</span> <span class="pre">describe</span></code> for more info.</p>
+<p>Please take a look at the Makefile rules <code class="docutils literal"><span class="pre">devel-src</span></code>, <code class="docutils literal"><span class="pre">devel-dsc</span></code> and
+<code class="docutils literal"><span class="pre">orig-src</span></code>.</p>
+</div></blockquote>
+</li>
+<li><p class="first">Announce to the mailing lists.</p>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2006-2015, Matthew Brett, Michael Hanke and Eric Larson &lt;nipy-devel@neuroimaging.scipy.org&gt;.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+  </body>
+</html>
